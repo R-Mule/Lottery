@@ -1,0 +1,48 @@
+name: Lottery
+version: 1.0alpha
+main: com.mulescraft.lottery.Lottery
+description: A Lottery plugin for gambling rewards.
+website: mulescraft.enjin.com
+author: Mule
+softdepend: [Vault]
+commands:
+   lottery:
+     description: Main command for Lottery
+     permission: lottery.lottery
+permissions:
+    lottery.lottery:
+        description: Grants permission to use /lottery. Required for any commands.
+        default: true
+    lottery.buy:
+        description: Grants permission to use /lottery buy
+        default: true
+    lottery.admin.*:
+        description: Grants all administrative functionality.
+        default: op
+        children:
+            lottery.stop: true
+            lottery.start: true
+            lottery.reload: true
+            lottery.buy: true
+            lottery.refund: true
+            lottery.history: true
+            lottery.stats: true
+            lottery.time: true
+    lottery.start:
+        description: Grants permission to use /lottery start
+        default: op
+    lottery.stop:
+        description: Grants permission to use /lottery stop
+        default: op
+    lottery.refund:
+        description: Grants permission to use /lottery refund
+        default: op
+    lottery.history:
+        description: Grants permission to use /lottery history
+        default: true
+    lottery.stats:
+        description: Grants permission to use /lottery stats
+        default: true
+    lottery.time:
+        description: Grants permission to use /lottery time
+        default: true
