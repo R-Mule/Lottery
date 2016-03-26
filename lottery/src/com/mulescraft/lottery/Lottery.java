@@ -25,11 +25,12 @@ public class Lottery extends JavaPlugin {
 	public String autoStartOpt = "Auto Start Crate Timer";
 	public String lotteryRndTime = "Lottery Round Time in Minutes";
 	public String winningsAmplifier = "Amount to Amplifty Winnings By";
+	public String ticketRange = "TicketMaxPickValue";
+	
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
 	public String localeMin = "Locale.Minute";
 	public String localeSec = "Locale.Second";
-	
 	//Config File with StatsAndData
 	ConfigFile pData = new ConfigFile(this,"PlayerData.yml");
 	ConfigFile lhData = new ConfigFile(this,"LottoHistory.yml");
@@ -77,6 +78,7 @@ private void loadDefaultConfigVars(){
 	getConfig().addDefault(autoStartOpt, true);
 	getConfig().addDefault(lotteryRndTime, 1);
 	getConfig().addDefault(winningsAmplifier,10);
+	getConfig().addDefault(ticketRange, 99);
 	
 
 }//end loadDefaultConfigVars

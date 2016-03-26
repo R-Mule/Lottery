@@ -3,8 +3,9 @@ package com.mulescraft.lottery;
 import java.util.Random;
 
 public class Numbers {
-	public Numbers(){
-		
+	Lottery lotto;
+	public Numbers(Lottery lotto){
+		this.lotto=lotto;
 	}//end RandomGenerator
 	
 	private int findRandom(int range){
@@ -12,4 +13,10 @@ public class Numbers {
 		int i = r.nextInt(range+1);
 		return i;
 	}//end findRandom()
+	
+	public boolean isValidNumber(int number){
+		
+		return true;
+	}//end isValidNumber
+	
 }//end RandomGenerator
