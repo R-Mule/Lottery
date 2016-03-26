@@ -1,5 +1,6 @@
 package com.mulescraft.lottery;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,6 +32,7 @@ public class CommandParser implements CommandExecutor {
 						sender.sendMessage("RELOAD");
 					}else if(args[0].equalsIgnoreCase("buy")&&sender.hasPermission("lottery.buy")){
 						//buy <lucky number> <amount of money>
+						//PlayerData player = new PlayerData();
 						sender.sendMessage("BUY");
 					}else if(args[0].equalsIgnoreCase("refund")&&sender.hasPermission("lottery.refund")){
 						//removes the bid the player made, refunding money input
@@ -40,7 +42,15 @@ public class CommandParser implements CommandExecutor {
 						sender.sendMessage("TIME");
 					}else if(args[0].equalsIgnoreCase("stats")&&sender.hasPermission("lottery.stats")){
 						//shows stat options, like best all time winner, worst lost. etc.
-						sender.sendMessage("STATS");
+						for(Player player : Bukkit.getServer().getOnlinePlayers()) {
+							if(player.getName().equalsIgnoreCase(sender.getName())){
+								PlayerData pdata = new PlayerData(player,lotto);
+								sender.sendMessage("STATS:"+ pdata.getBiggestWin());
+								pdata.addWin(1);
+								sender.sendMessage("STATS:"+ pdata.getBiggestWin());
+							}
+							
+						}
 					}else if(args[0].equalsIgnoreCase("history")&&sender.hasPermission("lottery.history")){
 						//shows last 10 lottery winners.
 						sender.sendMessage("HISTORY");

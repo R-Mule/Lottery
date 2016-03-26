@@ -32,7 +32,8 @@ public class Lottery extends JavaPlugin {
 	
 	//Config File with StatsAndData
 	ConfigFile pData = new ConfigFile(this,"PlayerData.yml");
-	ConfigFile lData = new ConfigFile(this,"LottoData.yml");
+	ConfigFile lhData = new ConfigFile(this,"LottoHistory.yml");
+	ConfigFile ssData = new ConfigFile(this,"ActiveTickets.yml");
 	
 @Override
 public void onEnable(){

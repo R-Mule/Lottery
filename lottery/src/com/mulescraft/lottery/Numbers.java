@@ -2,8 +2,8 @@ package com.mulescraft.lottery;
 
 import java.util.Random;
 
-public class RandomGenerator {
-	public RandomGenerator(){
+public class Numbers {
+	public Numbers(){
 		
 	}//end RandomGenerator
 	
