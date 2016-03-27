@@ -17,17 +17,17 @@ public class PlayerData {
 		player=p;
 		this.lotto = lotto;
 	}//end Constructor
-	
-	
+
+
 	public int getLottoNumber(){//returns -1 if they have no number.
 		return -1;//add content later
 	}//end getNumber()
-	
-	
+
+
 	public double getBetAmt(){
 		return betAmt;
 	}//end getBidAmt()
-	
+
 	public void addWin(double amtWon){
 		if(amtWon>lotto.pData.getDouble(player.getUniqueId().toString()+".BiggestWin")){//if biggest win yet. Set it!
 			lotto.pData.set(player.getUniqueId().toString()+".BiggestWin", amtWon);
@@ -38,7 +38,7 @@ public class PlayerData {
 		lotto.pData.set(player.getUniqueId().toString()+".TotalAmountWon", totalAmtWon+amtWon);//add to it
 		lotto.pData.save();//modified PlayerData.yml. Save it!
 	}//end addWin()
-	
+
 	public void addLoss(double amtLost){
 		if(amtLost>lotto.pData.getDouble(player.getUniqueId().toString()+".BiggestLoss")){//if biggest loss yet. Set it!
 			lotto.pData.set(player.getUniqueId().toString()+".BiggestLoss", amtLost);
@@ -49,45 +49,47 @@ public class PlayerData {
 		lotto.pData.set(player.getUniqueId().toString()+".TotalAmountLost", totalAmtLost+amtLost);//add to it
 		lotto.pData.save();//modified PlayerData.yml. Save it!
 	}//end addLoss()
-	
+
 	public int getTotalWins(){
 		return lotto.pData.getInt(player.getUniqueId().toString()+".TotalWins");//should return 0 if never won.
 	}//end getTotalWins()
-	
+
 	public int getTotalLosses(){
 		return lotto.pData.getInt(player.getUniqueId().toString()+".TotalLosses");//should return 0 if never lost.
 	}//end getTotalLosses()
-	
+
 	public double getBiggestWin(){
 		return lotto.pData.getDouble(player.getUniqueId().toString()+".BiggestWin");//should return 0 if never won.
 	}//end getBiggestWin()
-	
+
 	public double getBiggestLoss(){
 		return lotto.pData.getDouble(player.getUniqueId().toString()+".BiggestLoss");//should return 0 if never lost.
 	}//end getBiggestLoss()
-	
+
 	public double getTotalAmtWon(){
 		return lotto.pData.getDouble(player.getUniqueId().toString()+".TotalAmountWon");//should return 0 if never won.
 	}//end getTotalAmtWon
-	
+
 	public double getTotalAmtLost(){
 		return lotto.pData.getDouble(player.getUniqueId().toString()+".TotalAmountLost");//should return 0 if never lost.
 	}//end getTotalAmtLost
-	
+
 	public boolean addTicket(int luckyNumber, double amount){
 		return false;//returns false if they already have an active ticket.
 	}//end addTicket
-	
+
 	public boolean refundTicket(){
 		return false;//no ticket to refund if returns false
 	}//end refundTicket
-	
+
 	public void printPlayerStats(){
-		
+		player.sendMessage("Your Total Wins: "+getTotalWins());
+		player.sendMessage("Your Total Losses: "+getTotalLosses());
+		player.sendMessage("Your Biggest Win: "+getBiggestWin());
+		player.sendMessage("Your Biggest Loss: "+getBiggestLoss());
+		player.sendMessage("Your Total Amount Won: "+getTotalAmtWon());
+		player.sendMessage("Your Total Amount Lost: "+getTotalAmtLost());
 	}//end printPlayerStats
-	
-public void printServerStats(){
-		
-	}//end printServerStats
-	
+
+
 }//end PlayerData class

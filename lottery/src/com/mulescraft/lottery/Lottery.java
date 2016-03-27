@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.milkbowl.vault.economy.Economy;
 
 public class Lottery extends JavaPlugin {
-	
+
 	Server server = this.getServer();
 	ConsoleCommandSender console = server.getConsoleSender();
 	protected CommandParser listener;
@@ -21,13 +21,13 @@ public class Lottery extends JavaPlugin {
 	boolean before = false;
 	private static final Logger log = Logger.getLogger("Minecraft");
 	boolean isActive = false;//wether or not the lotto is currently running.
-	
+
 	//Config Vars
 	public String autoStartOpt = "Auto Start Crate Timer";
 	public String lotteryRndTime = "Lottery Round Time in Minutes";
 	public String winningsAmplifier = "Amount to Amplifty Winnings By";
 	public String ticketRange = "TicketMaxPickValue";
-	
+	public String serverStats = "ServerAllTimeStats";
 	//Config Messages
 	public String notEnoughMoneyMsg = "NOT_ENOUGH_MONEY_MESSAGE";
 	public String noBet2RefundMsg = "NO_BET_TO_REFUND_MESSAGE";
@@ -38,76 +38,76 @@ public class Lottery extends JavaPlugin {
 	public String missingSelfServerMsg = "MISSING_SELF_SERVER_MESSAGE";
 	public String alreadyPlacedBetMsg = "ALREADY_PLACED_BET_MESSAGE";
 	public String invalidNumberArguments = "INVALID_NUMBER_ARGUMENTS";
-	
+
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
 	public String localeMin = "Locale.Minute";
 	public String localeSec = "Locale.Second";
-	
+
 	//Config File with StatsAndData
 	ConfigFile pData = new ConfigFile(this,"PlayerData.yml");
 	ConfigFile lhData = new ConfigFile(this,"LottoHistory.yml");
 	ConfigFile ssData = new ConfigFile(this,"ActiveTickets.yml");
-	
-@Override
-public void onEnable(){
-	if (!setupEconomy() ) {
-        log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-        getServer().getPluginManager().disablePlugin(this);
-        return;
-    }
-	getConfig().options().header("Help Line 1\nHelp Line 2\n");
-	if (getConfig().get("pingInterval") != null) {
-		this.before = true;
-	}
-	listener = new CommandParser(this);
-	this.getCommand("lottery").setExecutor(listener);
-    loadDefaultConfigVars();   
-	console.sendMessage(ChatColor.BLUE+"[Lottery] Config Loaded");
-	
-}//end onEnable()
 
-//used to add color in chats msgs.
-public String subColors(String message){
-	
-	message = ChatColor.translateAlternateColorCodes('&', message);
-	return message;
-}//end replaceVars()
+	@Override
+	public void onEnable(){
+		if (!setupEconomy() ) {
+			log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+		getConfig().options().header("Help Line 1\nHelp Line 2\n");
+		if (getConfig().get("pingInterval") != null) {
+			this.before = true;
+		}
+		listener = new CommandParser(this);
+		this.getCommand("lottery").setExecutor(listener);
+		loadDefaultConfigVars();   
+		console.sendMessage(ChatColor.BLUE+"[Lottery] Config Loaded");
 
-private boolean setupEconomy() {
-    if (getServer().getPluginManager().getPlugin("Vault") == null) {
-        return false;
-    }
-    RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-    if (rsp == null) {
-        return false;
-    }
-    econ = rsp.getProvider();
-    return econ != null;
-}//end setupEconomy	
+	}//end onEnable()
 
+	//used to add color in chats msgs.
+	public String subColors(String message){
 
+		message = ChatColor.translateAlternateColorCodes('&', message);
+		return message;
+	}//end replaceVars()
+
+	private boolean setupEconomy() {
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		econ = rsp.getProvider();
+		return econ != null;
+	}//end setupEconomy	
 
 
 
-private void loadDefaultConfigVars(){
-	getConfig().addDefault(autoStartOpt, true);
-	getConfig().addDefault(lotteryRndTime, 1);
-	getConfig().addDefault(winningsAmplifier,10);
-	getConfig().addDefault(ticketRange, 99);
-	
-	//custom ChatMessages
-	getConfig().addDefault(notEnoughMoneyMsg,"&2Sorry, but you do not have enough money to place that bet.");
-	getConfig().addDefault(alreadyPlacedBetMsg,"&2Sorry, your bet for this lottery has already been placed.");
-	getConfig().addDefault(noBet2RefundMsg,"&2You currently have no active bets to be refunded.");
-	getConfig().addDefault(refundBeforeBetAgainMsg,"&2You must run &6/lottery refund&2 before betting again.");
-	getConfig().addDefault(betRefundedMsg, "&2Your bet of %amounbet% on number %luckynumber% has been refunded.");
-	getConfig().addDefault(betAcceptedMsg,"&2Your bet of %amountbet% on number %lukcynumber% has been accepted.");
-	getConfig().addDefault(noActiveLotteryMsg, "&2There is not a lottery running to bet or get refunds on currently.");
-	getConfig().addDefault(missingSelfServerMsg, "&2You need to use &6/lottery stats self &2or &6/lottery stats server &2.");
-	getConfig().addDefault(invalidNumberArguments,"&2The values entered are not numbers. Please use &6/lottery buy <luckynumber> <amount> &2with no <>");
 
-}//end loadDefaultConfigVars
+
+	private void loadDefaultConfigVars(){
+		getConfig().addDefault(autoStartOpt, true);
+		getConfig().addDefault(lotteryRndTime, 1);
+		getConfig().addDefault(winningsAmplifier,10);
+		getConfig().addDefault(ticketRange, 99);
+
+		//custom ChatMessages
+		getConfig().addDefault(notEnoughMoneyMsg,"&2Sorry, but you do not have enough money to place that bet.");
+		getConfig().addDefault(alreadyPlacedBetMsg,"&2Sorry, your bet for this lottery has already been placed.");
+		getConfig().addDefault(noBet2RefundMsg,"&2You currently have no active bets to be refunded.");
+		getConfig().addDefault(refundBeforeBetAgainMsg,"&2You must run &6/lottery refund&2 before betting again.");
+		getConfig().addDefault(betRefundedMsg, "&2Your bet of %amounbet% on number %luckynumber% has been refunded.");
+		getConfig().addDefault(betAcceptedMsg,"&2Your bet of %amountbet% on number %lukcynumber% has been accepted.");
+		getConfig().addDefault(noActiveLotteryMsg, "&2There is not a lottery running to bet or get refunds on currently.");
+		getConfig().addDefault(missingSelfServerMsg, "&2You need to use &6/lottery stats self &2or &6/lottery stats server &2.");
+		getConfig().addDefault(invalidNumberArguments,"&2The values entered are not numbers. Please use &6/lottery buy <luckynumber> <amount> &2with no <>");
+
+	}//end loadDefaultConfigVars
 
 
 
