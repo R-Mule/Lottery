@@ -15,21 +15,31 @@ public class TicketManager {
 		this.lotto = lotto;
 	}//end TicketManager Ctor.
 
-	public void addTicket(Player player,int luckyNumber, double amount){//if this is called. Then the ticket is to be added.
-		lotto.atData.set(player.getUniqueId().toString()+".LuckyNumber",luckyNumber);
-		lotto.atData.set(player.getUniqueId().toString()+".BetAmount",amount);
-		activeUUIDS = lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
-		activeUUIDS.add(player.getUniqueId().toString());//and uuid to it
-		lotto.atData.set("Active UUIDS", activeUUIDS);//set the new list of valid UUIDS back.
-		lotto.atData.save();
+	public boolean addTicket(Player player,int luckyNumber, double amount){
+		//NEED TO SEE IF TICKET CAN BE ADDED!
+		if(lotto.atData.getString(player.getUniqueId().toString()+".LuckyNumber")!=null){//there is already a ticket!
+			lotto.atData.set(player.getUniqueId().toString()+".LuckyNumber",luckyNumber);
+			lotto.atData.set(player.getUniqueId().toString()+".BetAmount",amount);
+			activeUUIDS = lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
+			activeUUIDS.add(player.getUniqueId().toString());//and uuid to it
+			lotto.atData.set("Active UUIDS", activeUUIDS);//set the new list of valid UUIDS back.
+			lotto.atData.save();
+			return true;
+		}//end if the ticket can be added.
+		return false;//found no ticket
 	}//end addTicket()
 
-	public void refundTicket(Player player,int luckyNumber,double amount){//if this is called. Then the ticket is to be removed.
-		lotto.atData.set(player.getUniqueId().toString(), null);
-		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
-		activeUUIDS.remove(player.getUniqueId().toString());
-		lotto.atData.set("Active UUIDS", activeUUIDS);//set the new list of valid UUIDS back.
-		lotto.atData.save();
+	public boolean refundTicket(Player player){
+		//NEED TO SEE IF TICKET CAN BE REFUNDED
+		if(lotto.atData.getString(player.getUniqueId().toString()+".LuckyNumber")==null){
+			lotto.atData.set(player.getUniqueId().toString(), null);
+			activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
+			activeUUIDS.remove(player.getUniqueId().toString());
+			lotto.atData.set("Active UUIDS", activeUUIDS);//set the new list of valid UUIDS back.
+			lotto.atData.save();
+			return true;
+		}//end if there is a ticket to refund
+		return false;//found no ticket.
 	}//end refundTicket()
 
 	@SuppressWarnings("unused")//REMOVE THIS LATER.... WHEN WE KNOW THE WINNING LOTTO NUMBER
@@ -70,6 +80,8 @@ public class TicketManager {
 		activeUUIDS=null;
 		lotto.atData.set("Active UUIDS", activeUUIDS);//Time for new beginnings!
 		lotto.atData.save();//finished doing modification
+
+		//NEED TO ADD LOTTERY HISTORY!!! DIDN'T DO THIS YET!
 	}//end lotteryEnded()
 
 

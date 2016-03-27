@@ -82,14 +82,6 @@ public class PlayerData {
 		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountLost");//should return 0 if never lost.
 	}//end getTotalAmtLost
 
-	public boolean addTicket(int luckyNumber, double amount){
-		return false;//returns false if they already have an active ticket.
-	}//end addTicket
-
-	public boolean refundTicket(){
-		return false;//no ticket to refund if returns false
-	}//end refundTicket
-
 	public void printPlayerStats(){//CANNOT BE CALLED WHEN OFFLINE PLAYER CTOR IS USED!
 		player.sendMessage("Your Total Wins: "+getTotalWins());
 		player.sendMessage("Your Total Losses: "+getTotalLosses());

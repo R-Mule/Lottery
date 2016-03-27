@@ -31,78 +31,15 @@ public class CommandParser implements CommandExecutor {
 						//reload the config
 						sender.sendMessage("RELOAD");
 					}else if(args[0].equalsIgnoreCase("buy")&&sender.hasPermission("lottery.buy")){//if you want to buy
-						if(lotto.isActive){
-							Numbers number = new Numbers(lotto);
-							if(StringUtils.isNumeric(args[1])&&StringUtils.isNumeric(args[2])&&number.isValidNumber(Integer.parseInt(args[1]))&&Double.parseDouble(args[2])>0){//if you picked in the right range from config range.
-								if(args.length>=3){
-									Player player = getPlayer(sender);
-									if(lotto.econ.getBalance(player)>=Double.parseDouble(args[2])){//can you afford this ticket?
-										lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
-										//create ticket in ActiveTickets.yml 
-										PlayerData pdata = new PlayerData(player,lotto);
-										if(pdata.addTicket(Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
-											String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
-											message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
-											message = lotto.subColors(message);//replace any colors.
-											sender.sendMessage(message);
-										}else if(sender.hasPermission("lottery.refund")){
-											String message = lotto.getConfig().getString(lotto.refundBeforeBetAgainMsg); //there is already an active bid! use /lottery refund to remove it. IF THEY HAVE THAT PERMISSION!
-											sender.sendMessage(lotto.subColors(message));//send the message after swapping colors.
-										}else{
-											String message = lotto.getConfig().getString(lotto.alreadyPlacedBetMsg);//sorry you have already placed your bid! Message.
-											sender.sendMessage(lotto.subColors(message));
-										}//end else bid already placed msg.
-									}else{
-										sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notEnoughMoneyMsg)));//Not enough money to place the bet message!
-									}//end else not enough money message
-								}else{
-									sender.sendMessage(lotto.subColors(lotto.missingBuyArguments));//missing buy arguments message.
-								}//end else missing Buy Arguments.
-							}else{//invalid arguments.
-								String message = lotto.getConfig().getString(lotto.invalidNumberArguments);//there is an invalid number problem. Send message
-								sender.sendMessage(lotto.subColors(message));
-							}//end else invalid arguments
-							sender.sendMessage("BUY");
-						}else{//Lottery is inactive!
-							String message = lotto.getConfig().getString(lotto.noActiveLotteryMsg);//send inactive lottery msg.
-							sender.sendMessage(lotto.subColors(message));
-						}//end else inactive lottery
+						buyCommand(sender,cmd,label,args);
 					}else if(args[0].equalsIgnoreCase("refund")&&sender.hasPermission("lottery.refund")){//if you want to refund your ticket. 
-						if(lotto.isActive){
-							//see if they have ActiveTicket
-							Player player = getPlayer(sender);
-							PlayerData pdata = new PlayerData(player, lotto);
-							if(pdata.refundTicket()){//if the refund was run
-								String message = lotto.getConfig().getString(lotto.betRefundedMsg);//get the betRefundedMessage from config.
-								message = lotto.subColors(message);//sub colors in from config.
-								message = replaceVars(pdata.getLottoNumber(),pdata.getBetAmt(),message);//replace %% messages with amounts.
-								sender.sendMessage(message);//ticket refunded message
-							}else{//no refund to return!
-								sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noBet2RefundMsg)));//send the no bet to refund message.
-							}//end if we can refund.
-							sender.sendMessage("REFUND");
-						}else{//inactive lottery! No refund available.
-							String message = lotto.getConfig().getString(lotto.noActiveLotteryMsg);//send inactive lottery msg.
-							sender.sendMessage(lotto.subColors(message));
-						}//end else lotto is inactive msg.
+						refundCommand(sender,cmd,label,args);
 					}else if(args[0].equalsIgnoreCase("time")&&sender.hasPermission("lottery.time")){
 						//shows remaining time
 						//this should be fun....
 						sender.sendMessage("TIME");
 					}else if(args[0].equalsIgnoreCase("stats")&&sender.hasPermission("lottery.stats")){
-						//shows stat options, like best all time winner, worst lost. etc.
-						Player player = getPlayer(sender);
-						if(args.length>=2&&args[1].equalsIgnoreCase("self")){
-							PlayerData pdata = new PlayerData(player,lotto);
-							pdata.printPlayerStats();
-						}else if(args.length>=2&&args[1].equalsIgnoreCase("server")){
-							ServerStats sstats = new ServerStats(player,lotto);
-							sstats.printServerStats();
-						}else{//end else if get server stats
-							String message = lotto.getConfig().getString(lotto.missingSelfServerMsg);//missing self/server message.
-							sender.sendMessage(lotto.subColors(message));
-						}//end else missing self/server message
-
+						statsCommand(sender,cmd,label,args);
 					}else if(args[0].equalsIgnoreCase("history")&&sender.hasPermission("lottery.history")){
 						ServerStats sstats = new ServerStats(getPlayer(sender),lotto);
 						sstats.printHistory();
@@ -192,4 +129,79 @@ public class CommandParser implements CommandExecutor {
 		}//end for all players
 		return null;
 	}//end getPlayer
+	
+	private void buyCommand(CommandSender sender, Command cmd, String label, String[] args){
+		if(lotto.isActive){
+			Numbers number = new Numbers(lotto);
+			if(StringUtils.isNumeric(args[1])&&StringUtils.isNumeric(args[2])&&number.isValidNumber(Integer.parseInt(args[1]))&&Double.parseDouble(args[2])>0){//if you picked in the right range from config range.
+				if(args.length>=3){
+					Player player = getPlayer(sender);
+					if(lotto.econ.getBalance(player)>=Double.parseDouble(args[2])){//can you afford this ticket?
+						lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
+						//create ticket in ActiveTickets.yml 
+						TicketManager tman = new TicketManager(lotto);
+						if(tman.addTicket(player,Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
+							String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
+							message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
+							message = lotto.subColors(message);//replace any colors.
+							sender.sendMessage(message);
+						}else if(sender.hasPermission("lottery.refund")){
+							String message = lotto.getConfig().getString(lotto.refundBeforeBetAgainMsg); //there is already an active bid! use /lottery refund to remove it. IF THEY HAVE THAT PERMISSION!
+							sender.sendMessage(lotto.subColors(message));//send the message after swapping colors.
+						}else{
+							String message = lotto.getConfig().getString(lotto.alreadyPlacedBetMsg);//sorry you have already placed your bid! Message.
+							sender.sendMessage(lotto.subColors(message));
+						}//end else bid already placed msg.
+					}else{
+						sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notEnoughMoneyMsg)));//Not enough money to place the bet message!
+					}//end else not enough money message
+				}else{
+					sender.sendMessage(lotto.subColors(lotto.missingBuyArguments));//missing buy arguments message.
+				}//end else missing Buy Arguments.
+			}else{//invalid arguments.
+				String message = lotto.getConfig().getString(lotto.invalidNumberArguments);//there is an invalid number problem. Send message
+				sender.sendMessage(lotto.subColors(message));
+			}//end else invalid arguments
+			sender.sendMessage("BUY");
+		}else{//Lottery is inactive!
+			String message = lotto.getConfig().getString(lotto.noActiveLotteryMsg);//send inactive lottery msg.
+			sender.sendMessage(lotto.subColors(message));
+		}//end else inactive lottery
+	}//end buyCommand()
+	
+		private void refundCommand(CommandSender sender, Command cmd, String label, String[] args){
+			if(lotto.isActive){
+				//see if they have ActiveTicket
+				Player player = getPlayer(sender);
+				PlayerData pdata = new PlayerData(player, lotto);
+				TicketManager tman = new TicketManager(lotto);
+				if(tman.refundTicket(player)){//if the refund was run
+					String message = lotto.getConfig().getString(lotto.betRefundedMsg);//get the betRefundedMessage from config.
+					message = lotto.subColors(message);//sub colors in from config.
+					message = replaceVars(pdata.getLottoNumber(),pdata.getBetAmt(),message);//replace %% messages with amounts.
+					sender.sendMessage(message);//ticket refunded message
+				}else{//no refund to return!
+					sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noBet2RefundMsg)));//send the no bet to refund message.
+				}//end if we can refund.
+				sender.sendMessage("REFUND");
+			}else{//inactive lottery! No refund available.
+				String message = lotto.getConfig().getString(lotto.noActiveLotteryMsg);//send inactive lottery msg.
+				sender.sendMessage(lotto.subColors(message));
+			}//end else lotto is inactive msg.
+	}//end refundCommand
+		
+		private void statsCommand(CommandSender sender, Command cmd, String label, String[] args){
+			//shows stat options, like best all time winner, worst lost. etc.
+			Player player = getPlayer(sender);
+			if(args.length>=2&&args[1].equalsIgnoreCase("self")){
+				PlayerData pdata = new PlayerData(player,lotto);
+				pdata.printPlayerStats();
+			}else if(args.length>=2&&args[1].equalsIgnoreCase("server")){
+				ServerStats sstats = new ServerStats(player,lotto);
+				sstats.printServerStats();
+			}else{//end else if get server stats
+				String message = lotto.getConfig().getString(lotto.missingSelfServerMsg);//missing self/server message.
+				sender.sendMessage(lotto.subColors(message));
+			}//end else missing self/server message
+		}//end statsCommand
 }//end CommandParser
