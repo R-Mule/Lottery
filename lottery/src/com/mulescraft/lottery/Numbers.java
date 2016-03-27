@@ -8,7 +8,7 @@ public class Numbers {
 		this.lotto=lotto;
 	}//end RandomGenerator
 	
-	private int findRandom(int range){
+	public int findRandom(int range){
 		Random r= new Random();
 		int i = r.nextInt(range+1);
 		return i;

@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 public class PlayerData {
 	Player player;//the player who is playing.
 	int lottoNum;//the number the player picked.
-	double bidAmt;//the bid amount the player made.
+	double betAmt;//the bet amount the player made.
 	int totalWins;//total times player has won lottery
 	int totalLosses;//total times player has lost lottery
 	double biggestWin;//largest amount ever won by player
@@ -18,20 +18,14 @@ public class PlayerData {
 		this.lotto = lotto;
 	}//end Constructor
 	
-	public void setLottoNum(int lotNum){
-		lottoNum = lotNum;
-	}//end setLottoNum
 	
 	public int getLottoNumber(){//returns -1 if they have no number.
 		return -1;//add content later
 	}//end getNumber()
 	
-	public void setBidAmt(double bid){
-		bidAmt=bid;
-	}//end setBidAmt()
 	
-	public double getBidAmt(){
-		return bidAmt;
+	public double getBetAmt(){
+		return betAmt;
 	}//end getBidAmt()
 	
 	public void addWin(double amtWon){
@@ -80,5 +74,20 @@ public class PlayerData {
 		return lotto.pData.getDouble(player.getUniqueId().toString()+".TotalAmountLost");//should return 0 if never lost.
 	}//end getTotalAmtLost
 	
+	public boolean addTicket(int luckyNumber, double amount){
+		return false;//returns false if they already have an active ticket.
+	}//end addTicket
+	
+	public boolean refundTicket(){
+		return false;//no ticket to refund if returns false
+	}//end refundTicket
+	
+	public void printPlayerStats(){
+		
+	}//end printPlayerStats
+	
+public void printServerStats(){
+		
+	}//end printServerStats
 	
 }//end PlayerData class
