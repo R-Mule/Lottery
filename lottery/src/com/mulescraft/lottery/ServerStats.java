@@ -1,21 +1,28 @@
 package com.mulescraft.lottery;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class ServerStats {
+	public OfflinePlayer offPlayer;
 	public Player player;
 	public Lottery lotto;
 	
-	ServerStats(Player p,Lottery lotto){
+	public ServerStats(Player p,Lottery lotto){
 		player=p;
 		this.lotto = lotto;
 	}//end Constructor
+	public ServerStats(OfflinePlayer p,Lottery lotto){
+		offPlayer=p;
+		this.lotto = lotto;
+	}//end Constructor
+	
 	//DO SET FUNCTIONS FOR ALL TIME BESTS! COMPARES!
 	public void checkBiggestWin(double amount){
 		double biggestWin = lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount");
 		if(biggestWin<amount){
 			lotto.lhData.set(lotto.serverStats+".BiggestWin.Amount",amount);
-			lotto.lhData.set(lotto.serverStats+".BiggestWin.Amount",player.getName());
+			lotto.lhData.set(lotto.serverStats+".BiggestWin.Amount",offPlayer.getName());
 			lotto.lhData.save();
 		}//end update new biggest winner
 	}//end checkBiggestWin()
@@ -24,7 +31,7 @@ public class ServerStats {
 		double biggestLoss = lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount");
 		if(biggestLoss<amount){
 			lotto.lhData.set(lotto.serverStats+".BiggestLoss.Amount",amount);
-			lotto.lhData.set(lotto.serverStats+".BiggestLoss.Amount",player.getName());
+			lotto.lhData.set(lotto.serverStats+".BiggestLoss.Amount",offPlayer.getName());
 			lotto.lhData.save();
 		}//end update new biggest loss
 	}//end checkBiggestLoss()
@@ -45,7 +52,7 @@ public class ServerStats {
 		double mostWins = lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number");
 		if(mostWins<playerTotalWins){
 			lotto.lhData.set(lotto.serverStats+".MostWins.Number",playerTotalWins);
-			lotto.lhData.set(lotto.serverStats+".MostWins.Player",player.getName());
+			lotto.lhData.set(lotto.serverStats+".MostWins.Player",offPlayer.getName());
 			lotto.lhData.save();
 		}//end update new most wins
 	}//end checkMostWins
@@ -54,12 +61,12 @@ public class ServerStats {
 		double mostLosses = lotto.lhData.getDouble(lotto.serverStats+".MostLosses.Number");
 		if(mostLosses<playerTotalLosses){
 			lotto.lhData.set(lotto.serverStats+".MostLosses.Number",playerTotalLosses);
-			lotto.lhData.set(lotto.serverStats+".MostLosses.Player",player.getName());
+			lotto.lhData.set(lotto.serverStats+".MostLosses.Player",offPlayer.getName());
 			lotto.lhData.save();
 		}//end update new most losses
 	}//end checkMostLosses()
 	
-	public void printServerStats(){
+	public void printServerStats(){//cannot be called when OFFLINEPLAYER is used!
 		player.sendMessage("Total Won: "+lotto.lhData.getDouble(lotto.serverStats+".TotalWon"));//All server money ever won.
 		player.sendMessage("Total Lost: "+lotto.lhData.getDouble(lotto.serverStats+".TotalLost"));//All money ever lost.
 		player.sendMessage("Biggest Win All Time: "+lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount")+" By: "+ lotto.lhData.getString(lotto.serverStats+".BiggestWin.Player"));//should print 0 if never a winner.

@@ -40,6 +40,8 @@ public class Lottery extends JavaPlugin {
 	public String alreadyPlacedBetMsg = "ALREADY_PLACED_BET_MESSAGE";
 	public String invalidNumberArguments = "INVALID_NUMBER_ARGUMENTS";
 	public String missingBuyArguments="MISSING_ARGUMENTS_FOR_BUY_COMMAND";
+	public String youWonMessage="WON_LOTTERY_MESSAGE";
+	public String youLostMessage = "LOST_LOTTERY_MESSAGE";
 	
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
@@ -49,7 +51,7 @@ public class Lottery extends JavaPlugin {
 	//Config File with StatsAndData
 	ConfigFile pData = new ConfigFile(this,"PlayerData.yml");
 	ConfigFile lhData = new ConfigFile(this,"LottoHistory.yml");
-	ConfigFile ssData = new ConfigFile(this,"ActiveTickets.yml");
+	ConfigFile atData = new ConfigFile(this,"ActiveTickets.yml");
 
 	@Override
 	public void onEnable(){
@@ -91,7 +93,7 @@ public class Lottery extends JavaPlugin {
 	private void loadDefaultConfigVars(){
 		getConfig().addDefault(autoStartOpt, true);
 		getConfig().addDefault(lotteryRndTime, 1);
-		getConfig().addDefault(winningsAmplifier,10);
+		getConfig().addDefault(winningsAmplifier,10.0);
 		getConfig().addDefault(ticketRange, 99);
 
 		//custom ChatMessages
@@ -105,6 +107,8 @@ public class Lottery extends JavaPlugin {
 		getConfig().addDefault(missingSelfServerMsg, "&2You need to use &6/lottery stats self &2or &6/lottery stats server &2.");
 		getConfig().addDefault(invalidNumberArguments,"&2The values entered are not numbers. Please use &6/lottery buy <luckynumber> <amount> &2with no <>");
 		getConfig().addDefault(missingBuyArguments, "&2Command Usage: &6/buy <luckynumber> <amount>");
+		getConfig().addDefault(youWonMessage, "&2CONGRATULATIONS! YOU JUST WON $%winamount% AT THE LOTTERY!");
+		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket did not win, you lost $%lossamount% at the lottery.");
 
 	}//end loadDefaultConfigVars
 
