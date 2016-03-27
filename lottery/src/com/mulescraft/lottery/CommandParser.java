@@ -34,6 +34,7 @@ public class CommandParser implements CommandExecutor {
 						if(lotto.isActive){
 							Numbers number = new Numbers(lotto);
 							if(StringUtils.isNumeric(args[1])&&StringUtils.isNumeric(args[2])&&number.isValidNumber(Integer.parseInt(args[1]))&&Double.parseDouble(args[2])>0){//if you picked in the right range from config range.
+								if(args.length>=3){
 								Player player = getPlayer(sender);
 								if(lotto.econ.getBalance(player)>=Double.parseDouble(args[2])){//can you afford this ticket?
 									lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
@@ -54,6 +55,9 @@ public class CommandParser implements CommandExecutor {
 								}else{
 									sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notEnoughMoneyMsg)));//Not enough money to place the bet message!
 								}//end else not enough money message
+								}else{
+									sender.sendMessage(lotto.subColors(lotto.missingBuyArguments));//missing buy arguments message.
+								}//end else missing Buy Arguments.
 							}else{//invalid arguments.
 								String message = lotto.getConfig().getString(lotto.invalidNumberArguments);//there is an invalid number problem. Send message
 								sender.sendMessage(lotto.subColors(message));
@@ -80,7 +84,7 @@ public class CommandParser implements CommandExecutor {
 						}else{//inactive lottery! No refund available.
 							String message = lotto.getConfig().getString(lotto.noActiveLotteryMsg);//send inactive lottery msg.
 							sender.sendMessage(lotto.subColors(message));
-						}
+						}//end else lotto is inactive msg.
 					}else if(args[0].equalsIgnoreCase("time")&&sender.hasPermission("lottery.time")){
 						//shows remaining time
 						//this should be fun....
@@ -88,10 +92,10 @@ public class CommandParser implements CommandExecutor {
 					}else if(args[0].equalsIgnoreCase("stats")&&sender.hasPermission("lottery.stats")){
 						//shows stat options, like best all time winner, worst lost. etc.
 						Player player = getPlayer(sender);
-						if(args[1].equalsIgnoreCase("self")){
+						if(args.length>=2&&args[1].equalsIgnoreCase("self")){
 							PlayerData pdata = new PlayerData(player,lotto);
 							pdata.printPlayerStats();
-						}else if(args[1].equalsIgnoreCase("server")){
+						}else if(args.length>=2&&args[1].equalsIgnoreCase("server")){
 							ServerStats sstats = new ServerStats(player,lotto);
 							sstats.printServerStats();
 						}else{//end else if get server stats
@@ -166,12 +170,12 @@ public class CommandParser implements CommandExecutor {
 			sender.sendMessage(ChatColor.WHITE+"/lottery time"+ChatColor.GREEN+" : shows remaining time until end of lottery");
 		}//end open
 		if(sender.hasPermission("lottery.stats")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery stats"+ChatColor.GREEN+" : shows categories of best all time stats");
+			sender.sendMessage(ChatColor.WHITE+"/lottery stats <server/self>"+ChatColor.GREEN+" : shows categories of best all time stats");
 		}//end open
 		if(sender.hasPermission("lottery.history")){
 			sender.sendMessage(ChatColor.WHITE+"/lottery history"+ChatColor.GREEN+" : shows last 10 lottery winners");
 		}//end open
-	}
+	}//end printCommandMenu
 
 	private String replaceVars(int num2Sub,double amt2Sub,String message){//this subs in the values from config %% replacements.
 		message.replaceAll("%luckynumber%", Integer.toString(num2Sub));

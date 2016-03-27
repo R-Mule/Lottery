@@ -28,6 +28,7 @@ public class Lottery extends JavaPlugin {
 	public String winningsAmplifier = "Amount to Amplifty Winnings By";
 	public String ticketRange = "TicketMaxPickValue";
 	public String serverStats = "ServerAllTimeStats";
+	
 	//Config Messages
 	public String notEnoughMoneyMsg = "NOT_ENOUGH_MONEY_MESSAGE";
 	public String noBet2RefundMsg = "NO_BET_TO_REFUND_MESSAGE";
@@ -38,7 +39,8 @@ public class Lottery extends JavaPlugin {
 	public String missingSelfServerMsg = "MISSING_SELF_SERVER_MESSAGE";
 	public String alreadyPlacedBetMsg = "ALREADY_PLACED_BET_MESSAGE";
 	public String invalidNumberArguments = "INVALID_NUMBER_ARGUMENTS";
-
+	public String missingBuyArguments="MISSING_ARGUMENTS_FOR_BUY_COMMAND";
+	
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
 	public String localeMin = "Locale.Minute";
@@ -86,10 +88,6 @@ public class Lottery extends JavaPlugin {
 		return econ != null;
 	}//end setupEconomy	
 
-
-
-
-
 	private void loadDefaultConfigVars(){
 		getConfig().addDefault(autoStartOpt, true);
 		getConfig().addDefault(lotteryRndTime, 1);
@@ -106,6 +104,7 @@ public class Lottery extends JavaPlugin {
 		getConfig().addDefault(noActiveLotteryMsg, "&2There is not a lottery running to bet or get refunds on currently.");
 		getConfig().addDefault(missingSelfServerMsg, "&2You need to use &6/lottery stats self &2or &6/lottery stats server &2.");
 		getConfig().addDefault(invalidNumberArguments,"&2The values entered are not numbers. Please use &6/lottery buy <luckynumber> <amount> &2with no <>");
+		getConfig().addDefault(missingBuyArguments, "&2Command Usage: &6/buy <luckynumber> <amount>");
 
 	}//end loadDefaultConfigVars
 
