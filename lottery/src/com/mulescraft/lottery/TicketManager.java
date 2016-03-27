@@ -44,11 +44,12 @@ public class TicketManager {
 				pData.addWin(lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount"));
 				stats.checkMostWins(pData.getTotalWins());
 				stats.checkBiggestWin(pData.getBiggestWin());
-				lotto.econ.depositPlayer(player, lotto.getConfig().getDouble("winningsAmplifier")*lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount"));//award them their money!
+				double amount = lotto.getConfig().getDouble("winningsAmplifier")*lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
+				lotto.econ.depositPlayer(player, amount);//award them their money!
 				//reward message! :) if the player is online to receive it.
 				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
 					if(onlinePlayer.getUniqueId().equals(playerUUID)){
-						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage)));
+						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(amount))));
 					}//end if same player
 				}//end for if the player is online lets tell them they won!
 			}else{//loser
@@ -58,7 +59,7 @@ public class TicketManager {
 				//loss message! :( If the player is online to receive it.
 				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
 					if(onlinePlayer.getUniqueId().equals(playerUUID)){
-						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youLostMessage)));
+						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youLostMessage).replaceAll("%amount%",Double.toString(lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount")))));
 					}//end if same player
 				}//end for if the player is online lets tell them they lost.
 			}//end add loss

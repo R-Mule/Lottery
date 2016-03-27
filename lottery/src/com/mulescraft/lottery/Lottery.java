@@ -60,10 +60,11 @@ public class Lottery extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		getConfig().options().header("Help Line 1\nHelp Line 2\n");
+		
 		if (getConfig().get("pingInterval") != null) {
 			this.before = true;
 		}
+		getConfig().options().header("Help Line 1\nHelp Line 2\n");
 		listener = new CommandParser(this);
 		this.getCommand("lottery").setExecutor(listener);
 		loadDefaultConfigVars();   
@@ -107,12 +108,15 @@ public class Lottery extends JavaPlugin {
 		getConfig().addDefault(missingSelfServerMsg, "&2You need to use &6/lottery stats self &2or &6/lottery stats server &2.");
 		getConfig().addDefault(invalidNumberArguments,"&2The values entered are not numbers. Please use &6/lottery buy <luckynumber> <amount> &2with no <>");
 		getConfig().addDefault(missingBuyArguments, "&2Command Usage: &6/buy <luckynumber> <amount>");
-		getConfig().addDefault(youWonMessage, "&2CONGRATULATIONS! YOU JUST WON $%winamount% AT THE LOTTERY!");
-		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket did not win, you lost $%lossamount% at the lottery.");
-
+		getConfig().addDefault(youWonMessage, "&2CONGRATULATIONS! YOU JUST WON $%amount% AT THE LOTTERY!");
+		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket did not win, you lost $%amount% at the lottery.");
+		getConfig().options().copyDefaults(true);
+	    saveConfig();
 	}//end loadDefaultConfigVars
 
-
-
+	@Override
+	public void onDisable(){
+		 //saveConfig();
+	}
 
 }//end Lottery Class
