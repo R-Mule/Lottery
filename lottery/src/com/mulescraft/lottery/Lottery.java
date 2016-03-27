@@ -42,6 +42,9 @@ public class Lottery extends JavaPlugin {
 	public String missingBuyArguments="MISSING_ARGUMENTS_FOR_BUY_COMMAND";
 	public String youWonMessage="WON_LOTTERY_MESSAGE";
 	public String youLostMessage = "LOST_LOTTERY_MESSAGE";
+	public String notStrtAlrdyStrtdMsg="NOT_START_ALREADY_STARTED_MSG";
+	public String notStpdAlrdyStpdMsg="NOT_STOP_ALREADY_STOPPED_MSG";
+	
 	public LotteryTimer lotTime;
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
@@ -105,18 +108,19 @@ public class Lottery extends JavaPlugin {
 		getConfig().addDefault(alreadyPlacedBetMsg,"&2Sorry, your bet for this lottery has already been placed.");
 		getConfig().addDefault(noBet2RefundMsg,"&2You currently have no active bets to be refunded.");
 		getConfig().addDefault(refundBeforeBetAgainMsg,"&2You must run &6/lottery refund&2 before betting again.");
-		getConfig().addDefault(betRefundedMsg, "&2Your bet of %amounbet% on number %luckynumber% has been refunded.");
-		getConfig().addDefault(betAcceptedMsg,"&2Your bet of %amountbet% on number %lukcynumber% has been accepted.");
-		getConfig().addDefault(noActiveLotteryMsg, "&2There is not a lottery running to bet or get refunds on currently.");
+		getConfig().addDefault(betRefundedMsg, "&2Your bet of %amountbet% on number %luckynumber% has been refunded.");
+		getConfig().addDefault(betAcceptedMsg,"&2Your bet of %amountbet% on number %luckynumber% has been accepted.");
+		getConfig().addDefault(noActiveLotteryMsg, "&2There is not a lottery running to bet, get refunds, or time remaining on currently.");
 		getConfig().addDefault(missingSelfServerMsg, "&2You need to use &6/lottery stats self &2or &6/lottery stats server &2.");
 		getConfig().addDefault(invalidNumberArguments,"&2The values entered are not numbers. Please use &6/lottery buy <luckynumber> <amount> &2with no <>");
 		getConfig().addDefault(missingBuyArguments, "&2Command Usage: &6/buy <luckynumber> <amount>");
 		getConfig().addDefault(youWonMessage, "&2CONGRATULATIONS! YOU JUST WON $%amount% AT THE LOTTERY!");
 		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket did not win, you lost $%amount% at the lottery.");
+		getConfig().addDefault(notStrtAlrdyStrtdMsg, "&2Cannot start the lottery. It is already running.");
+		getConfig().addDefault(notStpdAlrdyStpdMsg, "&2Cannot stop the lottery. It is already stopped.");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}//end loadDefaultConfigVars
-
 
 	@Override
 	public void onDisable(){

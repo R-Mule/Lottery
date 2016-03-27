@@ -17,7 +17,7 @@ public class TicketManager {
 
 	public boolean addTicket(Player player,int luckyNumber, double amount){
 		//NEED TO SEE IF TICKET CAN BE ADDED!
-		if(lotto.atData.getString(player.getUniqueId().toString()+".LuckyNumber")!=null){//there is already a ticket!
+		if(lotto.atData.getString(player.getUniqueId().toString()+".LuckyNumber")==null){//there is not a ticket yet!
 			lotto.atData.set(player.getUniqueId().toString()+".LuckyNumber",luckyNumber);
 			lotto.atData.set(player.getUniqueId().toString()+".BetAmount",amount);
 			activeUUIDS = lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
@@ -31,7 +31,7 @@ public class TicketManager {
 
 	public boolean refundTicket(Player player){
 		//NEED TO SEE IF TICKET CAN BE REFUNDED
-		if(lotto.atData.getString(player.getUniqueId().toString()+".LuckyNumber")==null){
+		if(lotto.atData.getString(player.getUniqueId().toString()+".LuckyNumber")!=null){
 			lotto.atData.set(player.getUniqueId().toString(), null);
 			activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
 			activeUUIDS.remove(player.getUniqueId().toString());
@@ -46,26 +46,32 @@ public class TicketManager {
 	public void lotteryEnded(){//if this is called. Then the lottery has ended. Award all tickets who won , and update stats with win/loss.
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
 		for(String uuid:activeUUIDS){//for all active tickets.
-			UUID playerUUID = UUID.fromString(uuid);
-			OfflinePlayer player = Bukkit.getOfflinePlayer(playerUUID);
-			PlayerData pData = new PlayerData(player,lotto);
-			ServerStats stats= new ServerStats(player,lotto);
-			if(true){//IF LUCKY NUMBER MATCHES //HERE IS NUMBER TO COMPARE lotto.atData.get(player.getUniqueId().toString()+".LuckyNumber");
-				pData.addWin(lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount"));
+			UUID playerUUID = UUID.fromString(uuid);//get the UUID of the betting player
+			OfflinePlayer player = Bukkit.getOfflinePlayer(playerUUID);//get OfflinePlayer from the UUID
+			PlayerData pData = new PlayerData(player,lotto);//send OfflinePlayer to pData
+			ServerStats stats= new ServerStats(player,lotto);//send OfflinePlayer to stats
+			if(false){//IF LUCKY NUMBER MATCHES //HERE IS NUMBER TO COMPARE lotto.atData.get(player.getUniqueId().toString()+".LuckyNumber");
+				double amtWon = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
+				amtWon = amtWon * lotto.getConfig().getDouble(lotto.winningsAmplifier);
+				pData.addWin(amtWon);//send bet amount to addWin with OfflinePlayer
 				stats.checkMostWins(pData.getTotalWins());
 				stats.checkBiggestWin(pData.getBiggestWin());
-				double amount = lotto.getConfig().getDouble("winningsAmplifier")*lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
-				lotto.econ.depositPlayer(player, amount);//award them their money!
+				stats.addWin(amtWon);
+				 //double amount = (lotto.getConfig().getDouble("winningsAmplifier"))*(lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount"));
+				//Bukkit.broadcastMessage(amtWon+" AMOUNT");
+				lotto.econ.depositPlayer(player, amtWon);//award them their money!
 				//reward message! :) if the player is online to receive it.
 				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
 					if(onlinePlayer.getUniqueId().equals(playerUUID)){
-						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(amount))));
+						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(amtWon))));
 					}//end if same player
 				}//end for if the player is online lets tell them they won!
 			}else{//loser
-				pData.addLoss(lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount"));
+				double amtLost = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
+				pData.addLoss(amtLost);
 				stats.checkMostLosses(pData.getTotalLosses());
 				stats.checkBiggestLoss(pData.getBiggestLoss());
+				stats.addLoss(amtLost);
 				//loss message! :( If the player is online to receive it.
 				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
 					if(onlinePlayer.getUniqueId().equals(playerUUID)){

@@ -12,7 +12,9 @@ public class LotteryTimer {
 	int lotteryTaskId;
 	int timerTaskId;
 	int cntDownTimerTaskId;
-	int secondCntr;//how many SECONDS until lottery ends.        
+	int secondCntr;//how many SECONDS until lottery ends.  
+	TicketManager tman;
+	
 	LotteryTimer(Lottery lotto,int min2Run){
 		this.lotto = lotto;
 		this.ticks2Run=min2Run*1200;
@@ -21,6 +23,7 @@ public class LotteryTimer {
 		runLotteryTimer();
 		startCountdownTimer();
 		lotto.isActive=true;
+		tman = new TicketManager(this.lotto);
 	}
 	
 	private void runLotteryTimer(){
@@ -30,6 +33,7 @@ public class LotteryTimer {
 			public void run() {
 				
 				// Do something
+				tman.lotteryEnded();
 				Bukkit.broadcastMessage("BLASTOFF!");
 				
 			}//end run

@@ -22,7 +22,7 @@ public class ServerStats {
 		double biggestWin = lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount");
 		if(biggestWin<amount){
 			lotto.lhData.set(lotto.serverStats+".BiggestWin.Amount",amount);
-			lotto.lhData.set(lotto.serverStats+".BiggestWin.Amount",offPlayer.getName());
+			lotto.lhData.set(lotto.serverStats+".BiggestWin.Player",offPlayer.getName());
 			lotto.lhData.save();
 		}//end update new biggest winner
 	}//end checkBiggestWin()
@@ -31,7 +31,7 @@ public class ServerStats {
 		double biggestLoss = lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount");
 		if(biggestLoss<amount){
 			lotto.lhData.set(lotto.serverStats+".BiggestLoss.Amount",amount);
-			lotto.lhData.set(lotto.serverStats+".BiggestLoss.Amount",offPlayer.getName());
+			lotto.lhData.set(lotto.serverStats+".BiggestLoss.Player",offPlayer.getName());
 			lotto.lhData.save();
 		}//end update new biggest loss
 	}//end checkBiggestLoss()
@@ -49,7 +49,7 @@ public class ServerStats {
 	}//end addLoss()
 
 	public void checkMostWins(int playerTotalWins){
-		double mostWins = lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number");
+		double mostWins = lotto.lhData.getInt(lotto.serverStats+".MostWins.Number");
 		if(mostWins<playerTotalWins){
 			lotto.lhData.set(lotto.serverStats+".MostWins.Number",playerTotalWins);
 			lotto.lhData.set(lotto.serverStats+".MostWins.Player",offPlayer.getName());
@@ -58,7 +58,7 @@ public class ServerStats {
 	}//end checkMostWins
 
 	public void checkMostLosses(int playerTotalLosses){
-		double mostLosses = lotto.lhData.getDouble(lotto.serverStats+".MostLosses.Number");
+		double mostLosses = lotto.lhData.getInt(lotto.serverStats+".MostLosses.Number");
 		if(mostLosses<playerTotalLosses){
 			lotto.lhData.set(lotto.serverStats+".MostLosses.Number",playerTotalLosses);
 			lotto.lhData.set(lotto.serverStats+".MostLosses.Player",offPlayer.getName());

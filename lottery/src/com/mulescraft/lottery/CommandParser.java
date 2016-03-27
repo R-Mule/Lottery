@@ -24,8 +24,10 @@ public class CommandParser implements CommandExecutor {
 					if(args[0].equalsIgnoreCase("stop")&&sender.hasPermission("lottery.stop")){
 						if(lotto.isActive){//stop the lotto, it is active
 							lotto.lotTime.stopLottery();
+							TicketManager tman = new TicketManager(lotto);
+							tman.lotteryEnded();
 						}else{
-							//already stopped message! Send it!
+							sender.sendMessage(lotto.subColors(lotto.notStpdAlrdyStpdMsg));//already stopped message! Send it!
 						}//
 						//end lottery timer complete stop.
 					}else if(args[0].equalsIgnoreCase("start")&&sender.hasPermission("lottery.start")){
@@ -33,7 +35,7 @@ public class CommandParser implements CommandExecutor {
 						if(!lotto.isActive){//start if not active
 							lotto.lotTime = new LotteryTimer(lotto,lotto.getConfig().getInt(lotto.lotteryRndTime));
 						}else{
-							//send could not start message.
+							sender.sendMessage(lotto.subColors(lotto.notStrtAlrdyStrtdMsg));//send could not start message.
 						}
 					}else if(args[0].equalsIgnoreCase("reload")&&sender.hasPermission("lottery.reload")){
 						//reload the config
@@ -43,10 +45,11 @@ public class CommandParser implements CommandExecutor {
 					}else if(args[0].equalsIgnoreCase("refund")&&sender.hasPermission("lottery.refund")){//if you want to refund your ticket. 
 						refundCommand(sender,cmd,label,args);
 					}else if(args[0].equalsIgnoreCase("time")&&sender.hasPermission("lottery.time")){
-						//shows remaining time
-						//this should be fun....
+						if(lotto.isActive){
 						lotto.lotTime.printRemainingTime(sender);
-						sender.sendMessage("TIME");
+						}else{
+							sender.sendMessage(lotto.subColors(lotto.noActiveLotteryMsg));//lotto not running right now message
+						}//end else no time to show
 					}else if(args[0].equalsIgnoreCase("stats")&&sender.hasPermission("lottery.stats")){
 						statsCommand(sender,cmd,label,args);
 					}else if(args[0].equalsIgnoreCase("history")&&sender.hasPermission("lottery.history")){
@@ -124,8 +127,8 @@ public class CommandParser implements CommandExecutor {
 	}//end printCommandMenu
 
 	private String replaceVars(int num2Sub,double amt2Sub,String message){//this subs in the values from config %% replacements.
-		message.replaceAll("%luckynumber%", Integer.toString(num2Sub));
-		message.replaceAll("%amountbet%", Double.toString(amt2Sub));
+		message = message.replaceAll("%luckynumber%", Integer.toString(num2Sub));
+		message = message.replaceAll("%amountbet%", Double.toString(amt2Sub));
 		return message;
 	}//end replaceVars()
 
@@ -142,8 +145,9 @@ public class CommandParser implements CommandExecutor {
 	private void buyCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(lotto.isActive){
 			Numbers number = new Numbers(lotto);
+			if(args.length>=3){
 			if(StringUtils.isNumeric(args[1])&&StringUtils.isNumeric(args[2])&&number.isValidNumber(Integer.parseInt(args[1]))&&Double.parseDouble(args[2])>0){//if you picked in the right range from config range.
-				if(args.length>=3){
+				
 					Player player = getPlayer(sender);
 					if(lotto.econ.getBalance(player)>=Double.parseDouble(args[2])){//can you afford this ticket?
 						lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
@@ -164,8 +168,8 @@ public class CommandParser implements CommandExecutor {
 					}else{
 						sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notEnoughMoneyMsg)));//Not enough money to place the bet message!
 					}//end else not enough money message
-				}else{
-					sender.sendMessage(lotto.subColors(lotto.missingBuyArguments));//missing buy arguments message.
+			//	}else{
+					//sender.sendMessage(lotto.subColors(lotto.missingBuyArguments));//missing buy arguments message.
 				}//end else missing Buy Arguments.
 			}else{//invalid arguments.
 				String message = lotto.getConfig().getString(lotto.invalidNumberArguments);//there is an invalid number problem. Send message

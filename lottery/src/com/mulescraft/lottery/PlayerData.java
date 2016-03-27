@@ -42,7 +42,7 @@ public class PlayerData {
 		}//end if biggest win yet.
 		totalWins = lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalWins");//get totalWins so we can add one.
 		lotto.pData.set(offPlayer.getUniqueId().toString()+".TotalWins", totalWins+1);//add one.
-		totalAmtWon = lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalAmountWon");//get totalAmtWon so we can add to it.
+		totalAmtWon = lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountWon");//get totalAmtWon so we can add to it.
 		lotto.pData.set(offPlayer.getUniqueId().toString()+".TotalAmountWon", totalAmtWon+amtWon);//add to it
 		lotto.pData.save();//modified offPlayerData.yml. Save it!
 	}//end addWin()
@@ -53,33 +53,45 @@ public class PlayerData {
 		}//end if biggest win yet.
 		totalLosses = lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalLosses");//get totalLosses so we can add one.
 		lotto.pData.set(offPlayer.getUniqueId().toString()+".TotalLosses", totalLosses+1);//add one.
-		totalAmtLost = lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalAmountLost");//get totalAmtLost so we can add to it.
+		totalAmtLost = lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountLost");//get totalAmtLost so we can add to it.
 		lotto.pData.set(offPlayer.getUniqueId().toString()+".TotalAmountLost", totalAmtLost+amtLost);//add to it
 		lotto.pData.save();//modified PlayerData.yml. Save it!
 	}//end addLoss()
 
 	public int getTotalWins(){
-		return lotto.pData.getInt(player.getUniqueId().toString()+".TotalWins");//should return 0 if never won.
+		if(offPlayer==null)
+			offPlayer = player;
+		return lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalWins");//should return 0 if never won.
 	}//end getTotalWins()
 
 	public int getTotalLosses(){
-		return lotto.pData.getInt(player.getUniqueId().toString()+".TotalLosses");//should return 0 if never lost.
+		if(offPlayer==null)
+			offPlayer = player;
+		return lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalLosses");//should return 0 if never lost.
 	}//end getTotalLosses()
 
 	public double getBiggestWin(){
-		return lotto.pData.getDouble(player.getUniqueId().toString()+".BiggestWin");//should return 0 if never won.
+		if(offPlayer==null)
+			offPlayer = player;
+		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".BiggestWin");//should return 0 if never won.
 	}//end getBiggestWin()
 
 	public double getBiggestLoss(){
-		return lotto.pData.getDouble(player.getUniqueId().toString()+".BiggestLoss");//should return 0 if never lost.
+		if(offPlayer==null)
+			offPlayer = player;
+		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".BiggestLoss");//should return 0 if never lost.
 	}//end getBiggestLoss()
 
 	public double getTotalAmtWon(){
-		return lotto.pData.getDouble(player.getUniqueId().toString()+".TotalAmountWon");//should return 0 if never won.
+		if(offPlayer==null)
+			offPlayer = player;
+		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountWon");//should return 0 if never won.
 	}//end getTotalAmtWon
 
 	public double getTotalAmtLost(){
-		return lotto.pData.getDouble(player.getUniqueId().toString()+".TotalAmountLost");//should return 0 if never lost.
+		if(offPlayer==null)
+			offPlayer = player;
+		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountLost");//should return 0 if never lost.
 	}//end getTotalAmtLost
 
 	public void printPlayerStats(){//CANNOT BE CALLED WHEN OFFLINE PLAYER CTOR IS USED!
