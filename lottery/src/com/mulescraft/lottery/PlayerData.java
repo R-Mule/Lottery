@@ -21,7 +21,7 @@ public class PlayerData {
 		player=p;
 		this.lotto = lotto;
 	}//end Constructor
-	
+
 	PlayerData(OfflinePlayer p,Lottery lotto){
 		this.lotto = lotto;
 		this.offPlayer = p;

@@ -14,7 +14,7 @@ public class TicketManager {
 	public TicketManager(Lottery lotto){
 		this.lotto = lotto;
 	}//end TicketManager Ctor.
-	
+
 	public void addTicket(Player player,int luckyNumber, double amount){//if this is called. Then the ticket is to be added.
 		lotto.atData.set(player.getUniqueId().toString()+".LuckyNumber",luckyNumber);
 		lotto.atData.set(player.getUniqueId().toString()+".BetAmount",amount);
@@ -23,15 +23,15 @@ public class TicketManager {
 		lotto.atData.set("Active UUIDS", activeUUIDS);//set the new list of valid UUIDS back.
 		lotto.atData.save();
 	}//end addTicket()
-	
+
 	public void refundTicket(Player player,int luckyNumber,double amount){//if this is called. Then the ticket is to be removed.
 		lotto.atData.set(player.getUniqueId().toString(), null);
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
-	    activeUUIDS.remove(player.getUniqueId().toString());
-	    lotto.atData.set("Active UUIDS", activeUUIDS);//set the new list of valid UUIDS back.
+		activeUUIDS.remove(player.getUniqueId().toString());
+		lotto.atData.set("Active UUIDS", activeUUIDS);//set the new list of valid UUIDS back.
 		lotto.atData.save();
 	}//end refundTicket()
-	
+
 	@SuppressWarnings("unused")//REMOVE THIS LATER.... WHEN WE KNOW THE WINNING LOTTO NUMBER
 	public void lotteryEnded(){//if this is called. Then the lottery has ended. Award all tickets who won , and update stats with win/loss.
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
@@ -67,10 +67,10 @@ public class TicketManager {
 			lotto.atData.set(player.getUniqueId().toString(), null);
 		}//end for all the active UUIDS in the arraylist!
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
-	    activeUUIDS=null;
-	    lotto.atData.set("Active UUIDS", activeUUIDS);//Time for new beginnings!
-	    lotto.atData.save();//finished doing modification
+		activeUUIDS=null;
+		lotto.atData.set("Active UUIDS", activeUUIDS);//Time for new beginnings!
+		lotto.atData.save();//finished doing modification
 	}//end lotteryEnded()
-	
-	
+
+
 }//end TicketManager Class

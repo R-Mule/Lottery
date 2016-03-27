@@ -7,7 +7,7 @@ public class ServerStats {
 	public OfflinePlayer offPlayer;
 	public Player player;
 	public Lottery lotto;
-	
+
 	public ServerStats(Player p,Lottery lotto){
 		player=p;
 		this.lotto = lotto;
@@ -16,7 +16,7 @@ public class ServerStats {
 		offPlayer=p;
 		this.lotto = lotto;
 	}//end Constructor
-	
+
 	//DO SET FUNCTIONS FOR ALL TIME BESTS! COMPARES!
 	public void checkBiggestWin(double amount){
 		double biggestWin = lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount");
@@ -26,7 +26,7 @@ public class ServerStats {
 			lotto.lhData.save();
 		}//end update new biggest winner
 	}//end checkBiggestWin()
-	
+
 	public void checkBiggestLoss(double amount){
 		double biggestLoss = lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount");
 		if(biggestLoss<amount){
@@ -35,19 +35,19 @@ public class ServerStats {
 			lotto.lhData.save();
 		}//end update new biggest loss
 	}//end checkBiggestLoss()
-	
+
 	public void addWin(double amount){
 		double currentAmount = lotto.lhData.getDouble(lotto.serverStats+".TotalWon");
 		lotto.lhData.set(lotto.serverStats+".TotalWon", currentAmount+amount);
 		lotto.lhData.save();
 	}//end addWin()
-	
+
 	public void addLoss(double amount){
 		double currentAmount = lotto.lhData.getDouble(lotto.serverStats+".TotalLost");
 		lotto.lhData.set(lotto.serverStats+".TotalLost", currentAmount+amount);
 		lotto.lhData.save();
 	}//end addLoss()
-	
+
 	public void checkMostWins(int playerTotalWins){
 		double mostWins = lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number");
 		if(mostWins<playerTotalWins){
@@ -56,7 +56,7 @@ public class ServerStats {
 			lotto.lhData.save();
 		}//end update new most wins
 	}//end checkMostWins
-	
+
 	public void checkMostLosses(int playerTotalLosses){
 		double mostLosses = lotto.lhData.getDouble(lotto.serverStats+".MostLosses.Number");
 		if(mostLosses<playerTotalLosses){
@@ -65,7 +65,7 @@ public class ServerStats {
 			lotto.lhData.save();
 		}//end update new most losses
 	}//end checkMostLosses()
-	
+
 	public void printServerStats(){//cannot be called when OFFLINEPLAYER is used!
 		player.sendMessage("Total Won: "+lotto.lhData.getDouble(lotto.serverStats+".TotalWon"));//All server money ever won.
 		player.sendMessage("Total Lost: "+lotto.lhData.getDouble(lotto.serverStats+".TotalLost"));//All money ever lost.
@@ -74,8 +74,8 @@ public class ServerStats {
 		player.sendMessage("Most Wins All Time: "+lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number")+" By: "+ lotto.lhData.getString(lotto.serverStats+".MostWins.Player"));//should print 0 if never a winner.
 		player.sendMessage("Most Losses All Time: "+lotto.lhData.getDouble(lotto.serverStats+".MostLosses.Number")+" By: "+lotto.lhData.getString(lotto.serverStats+".MostLosses.Player"));//should print 0 if never a loss.
 	}//end printServerStats
-	
+
 	public void printHistory(){//this MIGHT print an X amount of last lottery outcomes. When read from config.
-		
+
 	}//end printHistory()
 }//end class ServerStats

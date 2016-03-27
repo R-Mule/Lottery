@@ -35,26 +35,26 @@ public class CommandParser implements CommandExecutor {
 							Numbers number = new Numbers(lotto);
 							if(StringUtils.isNumeric(args[1])&&StringUtils.isNumeric(args[2])&&number.isValidNumber(Integer.parseInt(args[1]))&&Double.parseDouble(args[2])>0){//if you picked in the right range from config range.
 								if(args.length>=3){
-								Player player = getPlayer(sender);
-								if(lotto.econ.getBalance(player)>=Double.parseDouble(args[2])){//can you afford this ticket?
-									lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
-									//create ticket in ActiveTickets.yml 
-									PlayerData pdata = new PlayerData(player,lotto);
-									if(pdata.addTicket(Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
-										String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
-										message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
-										message = lotto.subColors(message);//replace any colors.
-										sender.sendMessage(message);
-									}else if(sender.hasPermission("lottery.refund")){
-										String message = lotto.getConfig().getString(lotto.refundBeforeBetAgainMsg); //there is already an active bid! use /lottery refund to remove it. IF THEY HAVE THAT PERMISSION!
-										sender.sendMessage(lotto.subColors(message));//send the message after swapping colors.
+									Player player = getPlayer(sender);
+									if(lotto.econ.getBalance(player)>=Double.parseDouble(args[2])){//can you afford this ticket?
+										lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
+										//create ticket in ActiveTickets.yml 
+										PlayerData pdata = new PlayerData(player,lotto);
+										if(pdata.addTicket(Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
+											String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
+											message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
+											message = lotto.subColors(message);//replace any colors.
+											sender.sendMessage(message);
+										}else if(sender.hasPermission("lottery.refund")){
+											String message = lotto.getConfig().getString(lotto.refundBeforeBetAgainMsg); //there is already an active bid! use /lottery refund to remove it. IF THEY HAVE THAT PERMISSION!
+											sender.sendMessage(lotto.subColors(message));//send the message after swapping colors.
+										}else{
+											String message = lotto.getConfig().getString(lotto.alreadyPlacedBetMsg);//sorry you have already placed your bid! Message.
+											sender.sendMessage(lotto.subColors(message));
+										}//end else bid already placed msg.
 									}else{
-										String message = lotto.getConfig().getString(lotto.alreadyPlacedBetMsg);//sorry you have already placed your bid! Message.
-										sender.sendMessage(lotto.subColors(message));
-									}//end else bid already placed msg.
-								}else{
-									sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notEnoughMoneyMsg)));//Not enough money to place the bet message!
-								}//end else not enough money message
+										sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notEnoughMoneyMsg)));//Not enough money to place the bet message!
+									}//end else not enough money message
 								}else{
 									sender.sendMessage(lotto.subColors(lotto.missingBuyArguments));//missing buy arguments message.
 								}//end else missing Buy Arguments.

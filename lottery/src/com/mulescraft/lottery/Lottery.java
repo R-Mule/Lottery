@@ -28,7 +28,7 @@ public class Lottery extends JavaPlugin {
 	public String winningsAmplifier = "Amount to Amplifty Winnings By";
 	public String ticketRange = "TicketMaxPickValue";
 	public String serverStats = "ServerAllTimeStats";
-	
+
 	//Config Messages
 	public String notEnoughMoneyMsg = "NOT_ENOUGH_MONEY_MESSAGE";
 	public String noBet2RefundMsg = "NO_BET_TO_REFUND_MESSAGE";
@@ -42,7 +42,7 @@ public class Lottery extends JavaPlugin {
 	public String missingBuyArguments="MISSING_ARGUMENTS_FOR_BUY_COMMAND";
 	public String youWonMessage="WON_LOTTERY_MESSAGE";
 	public String youLostMessage = "LOST_LOTTERY_MESSAGE";
-	
+
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
 	public String localeMin = "Locale.Minute";
@@ -60,7 +60,7 @@ public class Lottery extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		
+
 		if (getConfig().get("pingInterval") != null) {
 			this.before = true;
 		}
@@ -92,6 +92,9 @@ public class Lottery extends JavaPlugin {
 	}//end setupEconomy	
 
 	private void loadDefaultConfigVars(){
+		addHelpText();//this adds the support for the top
+
+		//vars used for lottery
 		getConfig().addDefault(autoStartOpt, true);
 		getConfig().addDefault(lotteryRndTime, 1);
 		getConfig().addDefault(winningsAmplifier,10.0);
@@ -111,12 +114,19 @@ public class Lottery extends JavaPlugin {
 		getConfig().addDefault(youWonMessage, "&2CONGRATULATIONS! YOU JUST WON $%amount% AT THE LOTTERY!");
 		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket did not win, you lost $%amount% at the lottery.");
 		getConfig().options().copyDefaults(true);
-	    saveConfig();
+		saveConfig();
 	}//end loadDefaultConfigVars
+
 
 	@Override
 	public void onDisable(){
-		 //saveConfig();
-	}
+		//saveConfig();
+	}//end onDisable()
+
+	public void addHelpText(){
+
+		getConfig().options().header("Help Line 1\nHelp Line 2\n");
+
+	}//end addHelpText()
 
 }//end Lottery Class
