@@ -22,11 +22,19 @@ public class CommandParser implements CommandExecutor {
 			else{
 				if(args!=null && args.length>0){
 					if(args[0].equalsIgnoreCase("stop")&&sender.hasPermission("lottery.stop")){
-						sender.sendMessage("STOP");
+						if(lotto.isActive){//stop the lotto, it is active
+							lotto.lotTime.stopLottery();
+						}else{
+							//already stopped message! Send it!
+						}//
 						//end lottery timer complete stop.
 					}else if(args[0].equalsIgnoreCase("start")&&sender.hasPermission("lottery.start")){
 						//force start the lottery timer
-						sender.sendMessage("START");
+						if(!lotto.isActive){//start if not active
+							lotto.lotTime = new LotteryTimer(lotto,lotto.getConfig().getInt(lotto.lotteryRndTime));
+						}else{
+							//send could not start message.
+						}
 					}else if(args[0].equalsIgnoreCase("reload")&&sender.hasPermission("lottery.reload")){
 						//reload the config
 						sender.sendMessage("RELOAD");
@@ -37,6 +45,7 @@ public class CommandParser implements CommandExecutor {
 					}else if(args[0].equalsIgnoreCase("time")&&sender.hasPermission("lottery.time")){
 						//shows remaining time
 						//this should be fun....
+						lotto.lotTime.printRemainingTime(sender);
 						sender.sendMessage("TIME");
 					}else if(args[0].equalsIgnoreCase("stats")&&sender.hasPermission("lottery.stats")){
 						statsCommand(sender,cmd,label,args);

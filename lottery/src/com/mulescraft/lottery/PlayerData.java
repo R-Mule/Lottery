@@ -59,36 +59,36 @@ public class PlayerData {
 	}//end addLoss()
 
 	public int getTotalWins(){
-		return lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalWins");//should return 0 if never won.
+		return lotto.pData.getInt(player.getUniqueId().toString()+".TotalWins");//should return 0 if never won.
 	}//end getTotalWins()
 
 	public int getTotalLosses(){
-		return lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalLosses");//should return 0 if never lost.
+		return lotto.pData.getInt(player.getUniqueId().toString()+".TotalLosses");//should return 0 if never lost.
 	}//end getTotalLosses()
 
 	public double getBiggestWin(){
-		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".BiggestWin");//should return 0 if never won.
+		return lotto.pData.getDouble(player.getUniqueId().toString()+".BiggestWin");//should return 0 if never won.
 	}//end getBiggestWin()
 
 	public double getBiggestLoss(){
-		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".BiggestLoss");//should return 0 if never lost.
+		return lotto.pData.getDouble(player.getUniqueId().toString()+".BiggestLoss");//should return 0 if never lost.
 	}//end getBiggestLoss()
 
 	public double getTotalAmtWon(){
-		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountWon");//should return 0 if never won.
+		return lotto.pData.getDouble(player.getUniqueId().toString()+".TotalAmountWon");//should return 0 if never won.
 	}//end getTotalAmtWon
 
 	public double getTotalAmtLost(){
-		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountLost");//should return 0 if never lost.
+		return lotto.pData.getDouble(player.getUniqueId().toString()+".TotalAmountLost");//should return 0 if never lost.
 	}//end getTotalAmtLost
 
 	public void printPlayerStats(){//CANNOT BE CALLED WHEN OFFLINE PLAYER CTOR IS USED!
 		player.sendMessage("Your Total Wins: "+getTotalWins());
 		player.sendMessage("Your Total Losses: "+getTotalLosses());
-		player.sendMessage("Your Biggest Win: "+getBiggestWin());
-		player.sendMessage("Your Biggest Loss: "+getBiggestLoss());
-		player.sendMessage("Your Total Amount Won: "+getTotalAmtWon());
-		player.sendMessage("Your Total Amount Lost: "+getTotalAmtLost());
+		player.sendMessage("Your Biggest Win: $"+getBiggestWin());
+		player.sendMessage("Your Biggest Loss: $"+getBiggestLoss());
+		player.sendMessage("Your Total Amount Won: $"+getTotalAmtWon());
+		player.sendMessage("Your Total Amount Lost: $"+getTotalAmtLost());
 	}//end printPlayerStats
 
 

@@ -67,10 +67,10 @@ public class ServerStats {
 	}//end checkMostLosses()
 
 	public void printServerStats(){//cannot be called when OFFLINEPLAYER is used!
-		player.sendMessage("Total Won: "+lotto.lhData.getDouble(lotto.serverStats+".TotalWon"));//All server money ever won.
-		player.sendMessage("Total Lost: "+lotto.lhData.getDouble(lotto.serverStats+".TotalLost"));//All money ever lost.
-		player.sendMessage("Biggest Win All Time: "+lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount")+" By: "+ lotto.lhData.getString(lotto.serverStats+".BiggestWin.Player"));//should print 0 if never a winner.
-		player.sendMessage("Biggest Loss All Time: "+lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount")+" By: "+lotto.lhData.getString(lotto.serverStats+".BiggestLoss.Player"));//should print 0 if never a loser.
+		player.sendMessage("Total Won: $"+lotto.lhData.getDouble(lotto.serverStats+".TotalWon"));//All server money ever won.
+		player.sendMessage("Total Lost: $"+lotto.lhData.getDouble(lotto.serverStats+".TotalLost"));//All money ever lost.
+		player.sendMessage("Biggest Win All Time: $"+lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount")+" By: "+ lotto.lhData.getString(lotto.serverStats+".BiggestWin.Player"));//should print 0 if never a winner.
+		player.sendMessage("Biggest Loss All Time: $"+lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount")+" By: "+lotto.lhData.getString(lotto.serverStats+".BiggestLoss.Player"));//should print 0 if never a loser.
 		player.sendMessage("Most Wins All Time: "+lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number")+" By: "+ lotto.lhData.getString(lotto.serverStats+".MostWins.Player"));//should print 0 if never a winner.
 		player.sendMessage("Most Losses All Time: "+lotto.lhData.getDouble(lotto.serverStats+".MostLosses.Number")+" By: "+lotto.lhData.getString(lotto.serverStats+".MostLosses.Player"));//should print 0 if never a loss.
 	}//end printServerStats

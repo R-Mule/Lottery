@@ -42,7 +42,7 @@ public class Lottery extends JavaPlugin {
 	public String missingBuyArguments="MISSING_ARGUMENTS_FOR_BUY_COMMAND";
 	public String youWonMessage="WON_LOTTERY_MESSAGE";
 	public String youLostMessage = "LOST_LOTTERY_MESSAGE";
-
+	public LotteryTimer lotTime;
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
 	public String localeMin = "Locale.Minute";
@@ -69,7 +69,7 @@ public class Lottery extends JavaPlugin {
 		this.getCommand("lottery").setExecutor(listener);
 		loadDefaultConfigVars();   
 		console.sendMessage(ChatColor.BLUE+"[Lottery] Config Loaded");
-
+	    lotTime = new LotteryTimer(this,1441);
 	}//end onEnable()
 
 	//used to add color in chats msgs.
