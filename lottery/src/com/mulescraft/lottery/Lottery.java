@@ -28,7 +28,7 @@ public class Lottery extends JavaPlugin {
 	public String winningsAmplifier = "Amount to Amplifty Winnings By";
 	public String ticketRange = "TicketMaxPickValue";
 	public String serverStats = "ServerAllTimeStats";
-
+	public String historyRange ="History Range to Show on Command History";
 	//Config Messages
 	public String notEnoughMoneyMsg = "NOT_ENOUGH_MONEY_MESSAGE";
 	public String noBet2RefundMsg = "NO_BET_TO_REFUND_MESSAGE";
@@ -44,6 +44,10 @@ public class Lottery extends JavaPlugin {
 	public String youLostMessage = "LOST_LOTTERY_MESSAGE";
 	public String notStrtAlrdyStrtdMsg="NOT_START_ALREADY_STARTED_MSG";
 	public String notStpdAlrdyStpdMsg="NOT_STOP_ALREADY_STOPPED_MSG";
+	public String lotteryEndServerMsg="LOTTERY_ENDED_SERVER_MSG";
+	public String noHistoryMsg="NO_HISTORY_TO_SHOW_MSG";
+	public String showHistoryMsg="SHOW_HISTORY_MSG";
+	public String notValidNumMsg="NOT_VALID_LOTTO_NUMBER_MSG";
 	
 	public LotteryTimer lotTime;
 	//locale? Might change this later, since each message is going to be custom.
@@ -101,8 +105,8 @@ public class Lottery extends JavaPlugin {
 		getConfig().addDefault(autoStartOpt, true);
 		getConfig().addDefault(lotteryRndTime, 1);
 		getConfig().addDefault(winningsAmplifier,10.0);
-		getConfig().addDefault(ticketRange, 99);
-
+		getConfig().addDefault(ticketRange, 9);
+		getConfig().addDefault(historyRange, 5);
 		//custom ChatMessages
 		getConfig().addDefault(notEnoughMoneyMsg,"&2Sorry, but you do not have enough money to place that bet.");
 		getConfig().addDefault(alreadyPlacedBetMsg,"&2Sorry, your bet for this lottery has already been placed.");
@@ -118,6 +122,10 @@ public class Lottery extends JavaPlugin {
 		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket did not win, you lost $%amount% at the lottery.");
 		getConfig().addDefault(notStrtAlrdyStrtdMsg, "&2Cannot start the lottery. It is already running.");
 		getConfig().addDefault(notStpdAlrdyStpdMsg, "&2Cannot stop the lottery. It is already stopped.");
+		getConfig().addDefault(lotteryEndServerMsg, "&2The Lottery has ended. The winning number was: %winningnumber%");
+		getConfig().addDefault(showHistoryMsg, "&2%number% most recent Lottery Results");
+		getConfig().addDefault(noHistoryMsg, "&2There are no lottery results recorded yet.");
+		getConfig().addDefault(notValidNumMsg, "&2Please enter a number between 1 and %range%");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}//end loadDefaultConfigVars

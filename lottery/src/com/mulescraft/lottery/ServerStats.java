@@ -75,7 +75,4 @@ public class ServerStats {
 		player.sendMessage("Most Losses All Time: "+lotto.lhData.getInt(lotto.serverStats+".MostLosses.Number")+" By: "+lotto.lhData.getString(lotto.serverStats+".MostLosses.Player"));//should print 0 if never a loss.
 	}//end printServerStats
 
-	public void printHistory(){//this MIGHT print an X amount of last lottery outcomes. When read from config.
-
-	}//end printHistory()
 }//end class ServerStats

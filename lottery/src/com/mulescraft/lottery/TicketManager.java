@@ -6,11 +6,16 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class TicketManager {
 	Lottery lotto;
 	List<String> activeUUIDS = new ArrayList<String>();
+	List<String> winners = new ArrayList<String>();
+	int winningNum=0;
+	int lotteryNum=0;
+
 	public TicketManager(Lottery lotto){
 		this.lotto = lotto;
 	}//end TicketManager Ctor.
@@ -47,31 +52,39 @@ public class TicketManager {
 		return false;//found no ticket.
 	}//end refundTicket()
 
-	@SuppressWarnings("unused")//REMOVE THIS LATER.... WHEN WE KNOW THE WINNING LOTTO NUMBER
 	public void lotteryEnded(){//if this is called. Then the lottery has ended. Award all tickets who won , and update stats with win/loss.
+		//Time to get a random number!
+		Numbers rand = new Numbers(lotto);
+		winningNum = rand.findRandom(lotto.getConfig().getInt(lotto.ticketRange));
+		lotteryNum = lotto.lhData.getInt("TotalLotteriesPlayed");
+		lotteryNum++;//add one since this one just ended.
+		lotto.lhData.set("TotalLotteriesPlayed", lotteryNum);//store it!
+
+		Bukkit.broadcastMessage(lotto.subColors(lotto.getConfig().getString(lotto.lotteryEndServerMsg).replaceAll("%winningnumber%", Integer.toString(winningNum))));//winning number server msg
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
 		for(String uuid:activeUUIDS){//for all active tickets.
 			UUID playerUUID = UUID.fromString(uuid);//get the UUID of the betting player
 			OfflinePlayer player = Bukkit.getOfflinePlayer(playerUUID);//get OfflinePlayer from the UUID
 			PlayerData pData = new PlayerData(player,lotto);//send OfflinePlayer to pData
 			ServerStats stats= new ServerStats(player,lotto);//send OfflinePlayer to stats
-			if(false){//IF LUCKY NUMBER MATCHES //HERE IS NUMBER TO COMPARE lotto.atData.get(player.getUniqueId().toString()+".LuckyNumber");
+
+			if(lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber")==winningNum){//IF LUCKY NUMBER MATCHES WINNER WINNER WINNER WINNER
 				double amtWon = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
 				amtWon = amtWon * lotto.getConfig().getDouble(lotto.winningsAmplifier);
 				pData.addWin(amtWon);//send bet amount to addWin with OfflinePlayer
 				stats.checkMostWins(pData.getTotalWins());
 				stats.checkBiggestWin(pData.getBiggestWin());
 				stats.addWin(amtWon);
-				 //double amount = (lotto.getConfig().getDouble("winningsAmplifier"))*(lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount"));
-				//Bukkit.broadcastMessage(amtWon+" AMOUNT");
+				winners.add(player.getName());//this will be stored in the lottery history
 				lotto.econ.depositPlayer(player, amtWon);//award them their money!
+
 				//reward message! :) if the player is online to receive it.
 				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
 					if(onlinePlayer.getUniqueId().equals(playerUUID)){
 						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(amtWon))));
 					}//end if same player
 				}//end for if the player is online lets tell them they won!
-			}else{//loser
+			}else{//LOSER LOSER LOSER LOSER
 				double amtLost = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
 				pData.addLoss(amtLost);
 				stats.checkMostLosses(pData.getTotalLosses());
@@ -92,8 +105,46 @@ public class TicketManager {
 		lotto.atData.set("Active UUIDS", activeUUIDS);//Time for new beginnings!
 		lotto.atData.save();//finished doing modification
 
-		//NEED TO ADD LOTTERY HISTORY!!! DIDN'T DO THIS YET!
+		lotto.lhData.set(lotteryNum+".WinningNumber",winningNum);
+		lotto.lhData.set(lotteryNum+".Winners", winners);
+		winners=null; //Goodbye winners.
+		lotto.lhData.save();//save our winners!
 	}//end lotteryEnded()
+
+
+	public void printLotteryHistory(CommandSender sender){//uses number to print from config.
+		int range = lotto.getConfig().getInt(lotto.historyRange);
+		if(lotto.lhData.getInt("TotalLotteriesPlayed")!=0){
+			int i=0;
+			if(range>=lotto.lhData.getInt("TotalLotteriesPlayed")){//if your range is larger than or same as number of lotteries played thus far, start from 1.
+				i=1;
+				range = lotto.lhData.getInt("TotalLotteriesPlayed");
+			}else{
+				i=lotto.lhData.getInt("TotalLotteriesPlayed")-range;
+			}
+			List<String> winrs = new ArrayList<String>();
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.showHistoryMsg).replaceAll("%number%",Integer.toString(range) )));
+			while(i<=lotto.lhData.getInt("TotalLotteriesPlayed")){
+
+				sender.sendMessage("Lottery Number: "+i+" Winning Number: "+lotto.lhData.getInt(Integer.toString(i)+".WinningNumber"));
+				
+				winrs = lotto.lhData.getStringList(Integer.toString(i)+".Winners");
+				if(winrs.isEmpty()){
+					sender.sendMessage("Winners: None");
+				}
+				else{
+					sender.sendMessage("Winners: ");
+				}
+				for(String player:winrs){//for all the winners
+					sender.sendMessage(player);
+				}//end for all the winners.
+				i++;
+			}//end while the range
+
+		}else{
+			Bukkit.broadcastMessage(lotto.subColors(lotto.getConfig().getString(lotto.noHistoryMsg)));//There are no recorded lotteries msg.
+		}//end else no histories
+	}//end printLotteryHistory
 
 	private String replaceVars(int num2Sub,double amt2Sub,String message){//this subs in the values from config %% replacements.
 		message = message.replaceAll("%luckynumber%", Integer.toString(num2Sub));

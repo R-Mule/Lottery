@@ -34,7 +34,7 @@ public class LotteryTimer {
 				
 				// Do something
 				tman.lotteryEnded();
-				Bukkit.broadcastMessage("BLASTOFF!");
+				//Bukkit.broadcastMessage("BLASTOFF!");
 				
 			}//end run
 		}, ticks2Run, ticks2Run);//repeat every  min2Run minutes. Repeating every min2Run minutes.
@@ -47,7 +47,7 @@ public class LotteryTimer {
 			public void run() {
 				
 				// Do something
-				Bukkit.broadcastMessage(Integer.toString(secondCntr));
+				//Bukkit.broadcastMessage(Integer.toString(secondCntr));
 				if(secondCntr==0){
 					secondCntr=min2Run*60;
 				}
