@@ -32,6 +32,11 @@ public class TicketManager {
 	public boolean refundTicket(Player player){
 		//NEED TO SEE IF TICKET CAN BE REFUNDED
 		if(lotto.atData.getString(player.getUniqueId().toString()+".LuckyNumber")!=null){
+			PlayerData pdata = new PlayerData(player,lotto);
+			String message = lotto.getConfig().getString(lotto.betRefundedMsg);//get the betRefundedMessage from config.
+			message = lotto.subColors(message);//sub colors in from config.
+			message = replaceVars(pdata.getLottoNumber(),pdata.getBetAmt(),message);//replace %% messages with amounts.
+			player.sendMessage(message);//ticket refunded message
 			lotto.atData.set(player.getUniqueId().toString(), null);
 			activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
 			activeUUIDS.remove(player.getUniqueId().toString());
@@ -90,5 +95,10 @@ public class TicketManager {
 		//NEED TO ADD LOTTERY HISTORY!!! DIDN'T DO THIS YET!
 	}//end lotteryEnded()
 
+	private String replaceVars(int num2Sub,double amt2Sub,String message){//this subs in the values from config %% replacements.
+		message = message.replaceAll("%luckynumber%", Integer.toString(num2Sub));
+		message = message.replaceAll("%amountbet%", Double.toString(amt2Sub));
+		return message;
+	}//end replaceVars()
 
 }//end TicketManager Class

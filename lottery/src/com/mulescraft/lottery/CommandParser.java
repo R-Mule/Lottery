@@ -27,7 +27,7 @@ public class CommandParser implements CommandExecutor {
 							TicketManager tman = new TicketManager(lotto);
 							tman.lotteryEnded();
 						}else{
-							sender.sendMessage(lotto.subColors(lotto.notStpdAlrdyStpdMsg));//already stopped message! Send it!
+							sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notStpdAlrdyStpdMsg)));//already stopped message! Send it!
 						}//
 						//end lottery timer complete stop.
 					}else if(args[0].equalsIgnoreCase("start")&&sender.hasPermission("lottery.start")){
@@ -35,7 +35,7 @@ public class CommandParser implements CommandExecutor {
 						if(!lotto.isActive){//start if not active
 							lotto.lotTime = new LotteryTimer(lotto,lotto.getConfig().getInt(lotto.lotteryRndTime));
 						}else{
-							sender.sendMessage(lotto.subColors(lotto.notStrtAlrdyStrtdMsg));//send could not start message.
+							sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notStrtAlrdyStrtdMsg)));//send could not start message.
 						}
 					}else if(args[0].equalsIgnoreCase("reload")&&sender.hasPermission("lottery.reload")){
 						//reload the config
@@ -188,15 +188,9 @@ public class CommandParser implements CommandExecutor {
 				Player player = getPlayer(sender);
 				PlayerData pdata = new PlayerData(player, lotto);
 				TicketManager tman = new TicketManager(lotto);
-				if(tman.refundTicket(player)){//if the refund was run
-					String message = lotto.getConfig().getString(lotto.betRefundedMsg);//get the betRefundedMessage from config.
-					message = lotto.subColors(message);//sub colors in from config.
-					message = replaceVars(pdata.getLottoNumber(),pdata.getBetAmt(),message);//replace %% messages with amounts.
-					sender.sendMessage(message);//ticket refunded message
-				}else{//no refund to return!
+				if(!tman.refundTicket(player)){//if the refund was run
 					sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noBet2RefundMsg)));//send the no bet to refund message.
-				}//end if we can refund.
-				sender.sendMessage("REFUND");
+				}
 			}else{//inactive lottery! No refund available.
 				String message = lotto.getConfig().getString(lotto.noActiveLotteryMsg);//send inactive lottery msg.
 				sender.sendMessage(lotto.subColors(message));

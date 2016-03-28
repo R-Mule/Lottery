@@ -71,8 +71,8 @@ public class ServerStats {
 		player.sendMessage("Total Lost: $"+lotto.lhData.getDouble(lotto.serverStats+".TotalLost"));//All money ever lost.
 		player.sendMessage("Biggest Win All Time: $"+lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount")+" By: "+ lotto.lhData.getString(lotto.serverStats+".BiggestWin.Player"));//should print 0 if never a winner.
 		player.sendMessage("Biggest Loss All Time: $"+lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount")+" By: "+lotto.lhData.getString(lotto.serverStats+".BiggestLoss.Player"));//should print 0 if never a loser.
-		player.sendMessage("Most Wins All Time: "+lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number")+" By: "+ lotto.lhData.getString(lotto.serverStats+".MostWins.Player"));//should print 0 if never a winner.
-		player.sendMessage("Most Losses All Time: "+lotto.lhData.getDouble(lotto.serverStats+".MostLosses.Number")+" By: "+lotto.lhData.getString(lotto.serverStats+".MostLosses.Player"));//should print 0 if never a loss.
+		player.sendMessage("Most Wins All Time: "+lotto.lhData.getInt(lotto.serverStats+".MostWins.Number")+" By: "+ lotto.lhData.getString(lotto.serverStats+".MostWins.Player"));//should print 0 if never a winner.
+		player.sendMessage("Most Losses All Time: "+lotto.lhData.getInt(lotto.serverStats+".MostLosses.Number")+" By: "+lotto.lhData.getString(lotto.serverStats+".MostLosses.Player"));//should print 0 if never a loss.
 	}//end printServerStats
 
 	public void printHistory(){//this MIGHT print an X amount of last lottery outcomes. When read from config.

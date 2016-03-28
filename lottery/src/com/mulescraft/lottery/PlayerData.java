@@ -28,12 +28,12 @@ public class PlayerData {
 	}//end constructor
 
 	public int getLottoNumber(){//returns -1 if they have no number.
-		return -1;//add content later
+		return lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber");
 	}//end getNumber()
 
 
 	public double getBetAmt(){
-		return betAmt;
+		return lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
 	}//end getBidAmt()
 
 	public void addWin(double amtWon){
