@@ -76,7 +76,7 @@ public class Lottery extends JavaPlugin {
 		this.getCommand("lottery").setExecutor(listener);
 		loadDefaultConfigVars();   
 		console.sendMessage(ChatColor.BLUE+"[Lottery] Config Loaded");
-	    lotTime = new LotteryTimer(this,1441);
+	    lotTime = new LotteryTimer(this,getConfig().getInt(lotteryRndTime));
 	}//end onEnable()
 
 	//used to add color in chats msgs.

@@ -144,10 +144,10 @@ public class CommandParser implements CommandExecutor {
 		if(lotto.isActive){
 			Numbers number = new Numbers(lotto);
 			if(args.length>=3){
-				if(StringUtils.isNumeric(args[1])&&StringUtils.isNumeric(args[2])&&number.isValidNumber(Integer.parseInt(args[1]))&&Double.parseDouble(args[2])>0){//if you picked in the right range from config range.
+				if(StringUtils.isNumeric(args[1])&&StringUtils.isNumeric(args[2])&&number.isValidNumber(Integer.parseInt(args[1]),getPlayer(sender))&&Double.parseDouble(args[2])>0){//is number.
 					Player player = getPlayer(sender);
 					if(lotto.econ.getBalance(player)>=Double.parseDouble(args[2])){//can you afford this ticket?
-						if(number.isValidNumber(Integer.parseInt(args[1]))){
+						if(number.isValidNumber(Integer.parseInt(args[1]),player)){
 							lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
 							//create ticket in ActiveTickets.yml 
 							TicketManager tman = new TicketManager(lotto);
@@ -163,17 +163,10 @@ public class CommandParser implements CommandExecutor {
 								String message = lotto.getConfig().getString(lotto.alreadyPlacedBetMsg);//sorry you have already placed your bid! Message.
 								sender.sendMessage(lotto.subColors(message));
 							}//end else bid already placed msg.
-						}else{
-							String msg = lotto.getConfig().getString(lotto.notValidNumMsg);
-							String range=Integer.toString(lotto.getConfig().getInt(lotto.ticketRange));
-							msg = msg.replaceAll("%range%", range);
-							sender.sendMessage(lotto.subColors(msg));//NOT VALID NUMBER ERROR MSG
 						}
 					}else{
 						sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notEnoughMoneyMsg)));//Not enough money to place the bet message!
 					}//end else not enough money message
-					//	}else{
-					//sender.sendMessage(lotto.subColors(lotto.missingBuyArguments));//missing buy arguments message.
 				}//end else missing Buy Arguments.
 			}else{//invalid arguments.
 				String message = lotto.getConfig().getString(lotto.invalidNumberArguments);//there is an invalid number problem. Send message
