@@ -29,6 +29,7 @@ public class Lottery extends JavaPlugin {
 	public String ticketRange = "TicketMaxPickValue";
 	public String serverStats = "ServerAllTimeStats";
 	public String historyRange ="History Range to Show on Command History";
+	
 	//Config Messages
 	public String notEnoughMoneyMsg = "NOT_ENOUGH_MONEY_MESSAGE";
 	public String noBet2RefundMsg = "NO_BET_TO_REFUND_MESSAGE";
@@ -103,7 +104,7 @@ public class Lottery extends JavaPlugin {
 
 		//vars used for lottery
 		getConfig().addDefault(autoStartOpt, true);
-		getConfig().addDefault(lotteryRndTime, 1);
+		getConfig().addDefault(lotteryRndTime, 60);
 		getConfig().addDefault(winningsAmplifier,10.0);
 		getConfig().addDefault(ticketRange, 9);
 		getConfig().addDefault(historyRange, 5);
