@@ -52,8 +52,14 @@ public class CommandParser implements CommandExecutor {
 					}else if(args[0].equalsIgnoreCase("history")&&sender.hasPermission("lottery.history")){
 						TicketManager tman = new TicketManager(lotto);
 						tman.printLotteryHistory(sender);//print that history!
+					}else if(args[0].equalsIgnoreCase("current")&&sender.hasPermission("lottery.current")){
+						if(lotto.isActive){
+							TicketManager tman = new TicketManager(lotto);
+							tman.printActiveTickets(sender);//print that active info!!
+						}else{
+							sender.sendMessage(lotto.subColors(lotto.getConfig().getString((lotto.noActiveLotteryMsg))));//lotto not running right now message
+						}//end else
 					}else{
-						//command unknown, maybe print menu? /lottery help would trigger this.
 						printCommandMenu(sender);
 					}//end else command unknown. Print menu to help them.
 				}//end if there is an argument.
@@ -92,6 +98,9 @@ public class CommandParser implements CommandExecutor {
 		if(sender.hasPermission("lottery.history")){
 			sender.sendMessage(ChatColor.WHITE+"/lottery history"+ChatColor.GREEN+" : shows last "+lotto.getConfig().getInt(lotto.historyRange) +" lottery winners");
 		}//end open
+		if(sender.hasPermission("lottery.current")){
+			sender.sendMessage(ChatColor.WHITE+"/lottery current"+ChatColor.GREEN+" : shows active tickets for the current lottery");
+		}
 	}//end printCommandMenu
 
 	private String replaceVars(int num2Sub,double amt2Sub,String message){//this subs in the values from config %% replacements.

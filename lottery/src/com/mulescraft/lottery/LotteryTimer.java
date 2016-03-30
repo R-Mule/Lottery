@@ -22,6 +22,8 @@ public class LotteryTimer {
 		this.min2Run = min2Run;
 		runLotteryTimer();
 		startCountdownTimer();
+		if(lotto.getConfig().getBoolean(lotto.announceLotteryStart));
+			Bukkit.broadcastMessage(lotto.subColors(lotto.getConfig().getString(lotto.startMsg)));
 		lotto.isActive=true;
 		tman = new TicketManager(this.lotto);
 	}

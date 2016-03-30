@@ -1,10 +1,10 @@
 name: Lottery
-version: 1.0
+version: 1.0.1
 main: com.mulescraft.lottery.Lottery
 description: A Lottery plugin for gambling rewards.
 website: mulescraft.enjin.com
 author: Mule
-softdepend: [Vault]
+depend: [Vault]
 commands:
    lottery:
      description: Main command for Lottery
@@ -22,11 +22,13 @@ permissions:
         children:
             lottery.stop: true
             lottery.start: true
+            lottery.reload: true
             lottery.buy: true
             lottery.refund: true
             lottery.history: true
             lottery.stats: true
             lottery.time: true
+            lottery.current: true
     lottery.start:
         description: Grants permission to use /lottery start
         default: op
@@ -44,4 +46,7 @@ permissions:
         default: true
     lottery.time:
         description: Grants permission to use /lottery time
+        default: true
+    lottery.current:
+        description: Grants permission to use /lottery current
         default: true

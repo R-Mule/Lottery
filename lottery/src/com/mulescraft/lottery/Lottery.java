@@ -28,6 +28,7 @@ public class Lottery extends JavaPlugin {
 	public String ticketRange = "TicketMaxPickValue";
 	public String serverStats = "ServerAllTimeStats";
 	public String historyRange ="History Range to Show on Command History";
+	public String announceLotteryStart = "Announce Lottery Start";
 	
 	//Config Messages
 	public String notEnoughMoneyMsg = "NOT_ENOUGH_MONEY_MESSAGE";
@@ -48,6 +49,9 @@ public class Lottery extends JavaPlugin {
 	public String noHistoryMsg="NO_HISTORY_TO_SHOW_MSG";
 	public String showHistoryMsg="SHOW_HISTORY_MSG";
 	public String notValidNumMsg="NOT_VALID_LOTTO_NUMBER_MSG";
+	public String activeTicketsMsg = "ACTIVE_TICKETS_MSG";
+	public String noActiveTicketsMsg = "NO_ACTIVE_TICKETS_MSG";
+	public String startMsg="LOTTERY_START_MESSAGE";
 	
 	public LotteryTimer lotTime;
 	//locale? Might change this later, since each message is going to be custom.
@@ -108,6 +112,7 @@ public class Lottery extends JavaPlugin {
 		getConfig().addDefault(winningsAmplifier,10.0);
 		getConfig().addDefault(ticketRange, 9);
 		getConfig().addDefault(historyRange, 5);
+		getConfig().addDefault(announceLotteryStart, true);
 		//custom ChatMessages
 		getConfig().addDefault(notEnoughMoneyMsg,"&2Sorry, but you do not have enough money to place that bet.");
 		getConfig().addDefault(alreadyPlacedBetMsg,"&2Sorry, your bet for this lottery has already been placed.");
@@ -127,6 +132,9 @@ public class Lottery extends JavaPlugin {
 		getConfig().addDefault(showHistoryMsg, "&2%number% most recent Lottery Results");
 		getConfig().addDefault(noHistoryMsg, "&2There are no lottery results recorded yet.");
 		getConfig().addDefault(notValidNumMsg, "&2Please enter a number between 1 and %range%");
+		getConfig().addDefault(activeTicketsMsg, "&2~Current Tickets For Lottery Number: %number% ~");
+		getConfig().addDefault(noActiveTicketsMsg, "&2There are currently no active tickets to display.");
+		getConfig().addDefault(startMsg, "&2The Lottery has started! Use &6/lottery&2 to play!");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}//end loadDefaultConfigVars

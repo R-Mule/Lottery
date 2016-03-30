@@ -127,7 +127,7 @@ public class TicketManager {
 			while(i<=lotto.lhData.getInt("TotalLotteriesPlayed")){
 
 				sender.sendMessage("Lottery Number: "+i+" Winning Number: "+lotto.lhData.getInt(Integer.toString(i)+".WinningNumber"));
-				
+
 				winrs = lotto.lhData.getStringList(Integer.toString(i)+".Winners");
 				if(winrs.isEmpty()){
 					sender.sendMessage("Winners: None");
@@ -152,4 +152,19 @@ public class TicketManager {
 		return message;
 	}//end replaceVars()
 
+	public void printActiveTickets(CommandSender sender){
+		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//lets get all the active UUIDs.
+		if(!activeUUIDS.isEmpty()){
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.activeTicketsMsg)).replaceAll("%number%",Integer.toString(lotto.lhData.getInt("TotalLotteriesPlayed")+1)));
+			sender.sendMessage("Player : Number : Bet");
+			for(String uuid : activeUUIDS){
+				UUID pUUID = UUID.fromString(uuid);
+				OfflinePlayer player = Bukkit.getOfflinePlayer(pUUID);
+				sender.sendMessage(player.getName()+" : "+lotto.atData.getInt(uuid+".LuckyNumber")+" : "+lotto.atData.getDouble(uuid+".BetAmount"));
+
+			}//end for
+		}else{
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noActiveTicketsMsg)));
+		}//end else no active lottery
+	}//end printActiveTickets()
 }//end TicketManager Class
