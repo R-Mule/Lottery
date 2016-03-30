@@ -33,10 +33,8 @@ public class LotteryTimer {
 		lotteryTaskId = scheduler.scheduleSyncRepeatingTask(lotto, new Runnable() {
 			@Override
 			public void run() {
-				
-				// Do something
+
 				tman.lotteryEnded();
-				//Bukkit.broadcastMessage("BLASTOFF!");
 				
 			}//end run
 		}, ticks2Run, ticks2Run);//repeat every  min2Run minutes. Repeating every min2Run minutes.
@@ -47,9 +45,6 @@ public class LotteryTimer {
 		cntDownTimerTaskId = scheduler.scheduleSyncRepeatingTask(lotto, new Runnable() {
 			@Override
 			public void run() {
-				
-				// Do something
-				//Bukkit.broadcastMessage(Integer.toString(secondCntr));
 				if(secondCntr==0){
 					secondCntr=min2Run*60;
 				}
