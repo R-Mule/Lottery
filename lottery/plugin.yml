@@ -1,5 +1,5 @@
 name: Lottery
-version: 1.0Beta
+version: 1.0
 main: com.mulescraft.lottery.Lottery
 description: A Lottery plugin for gambling rewards.
 website: mulescraft.enjin.com
@@ -22,7 +22,6 @@ permissions:
         children:
             lottery.stop: true
             lottery.start: true
-            lottery.reload: true
             lottery.buy: true
             lottery.refund: true
             lottery.history: true

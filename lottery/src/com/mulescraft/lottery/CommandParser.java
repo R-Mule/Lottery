@@ -37,9 +37,6 @@ public class CommandParser implements CommandExecutor {
 						}else{
 							sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notStrtAlrdyStrtdMsg)));//send could not start message.
 						}
-					}else if(args[0].equalsIgnoreCase("reload")&&sender.hasPermission("lottery.reload")){
-						//reload the config
-						sender.sendMessage("RELOAD");
 					}else if(args[0].equalsIgnoreCase("buy")&&sender.hasPermission("lottery.buy")){//if you want to buy
 						buyCommand(sender,cmd,label,args);
 					}else if(args[0].equalsIgnoreCase("refund")&&sender.hasPermission("lottery.refund")){//if you want to refund your ticket. 
@@ -68,30 +65,6 @@ public class CommandParser implements CommandExecutor {
 		}//end if the command was lottery
 		return false;
 
-		/*
-		 * /lottery help
-			/lottery stop (admin command, stop lottery)
-			/lottery start (admin command, start lottery manual)
-			/lottery reload (reload config file)
-			/lottery buy <lucky number> <amount of money>
-			/lottery refund returns bid and removes you from lottery
-		 * /lottery check (top 10 number and number of player who buy it, and time to this round end)
-			==== Round #56 Time to round end: 34 minutes= ======
-			1#Number 13 54 players buy
-			2#Number 76 34 players buy
-			...............................
-			10#Number 34 12 players buy
-
-			/lottery history (10 recent round result number)
-			==== Lottery history: 10 recent rounds=======
-			#round 1345 15 (number win on this round)
-			#round 1344 87
-			#round 1343 90
-			............
-			#round 1335 08
-			When player click their lottery (winner lottery paper), it shoud broadcast their name, money prize they take, lucky name, round.
-		 */
-
 	}//end onCommand
 
 	private void printCommandMenu(CommandSender sender){
@@ -104,11 +77,8 @@ public class CommandParser implements CommandExecutor {
 		if(sender.hasPermission("lottery.start")){
 			sender.sendMessage(ChatColor.WHITE+"/lottery start"+ChatColor.GREEN+" : starts a lottery forcefully.");
 		}//end give
-		if(sender.hasPermission("lottery.reload")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery reload"+ChatColor.GREEN+" : reloads lottery config.yml");
-		}//end spawn
 		if(sender.hasPermission("lottery.buy")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery buy <number> <amount of money>"+ChatColor.GREEN+" : buys <number> with <amount of money> gambled");
+			sender.sendMessage(ChatColor.WHITE+"/lottery buy <number> <amount of money>"+ChatColor.GREEN+" : buys <number> with <amount of money> gambled.");
 		}//end open
 		if(sender.hasPermission("lottery.refund")){
 			sender.sendMessage(ChatColor.WHITE+"/lottery refund"+ChatColor.GREEN+" : returns your money, and removes your bet");
@@ -120,7 +90,7 @@ public class CommandParser implements CommandExecutor {
 			sender.sendMessage(ChatColor.WHITE+"/lottery stats <server/self>"+ChatColor.GREEN+" : shows categories of best all time stats");
 		}//end open
 		if(sender.hasPermission("lottery.history")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery history"+ChatColor.GREEN+" : shows last 10 lottery winners");
+			sender.sendMessage(ChatColor.WHITE+"/lottery history"+ChatColor.GREEN+" : shows last "+lotto.getConfig().getInt(lotto.historyRange) +" lottery winners");
 		}//end open
 	}//end printCommandMenu
 
@@ -182,7 +152,7 @@ public class CommandParser implements CommandExecutor {
 		if(lotto.isActive){
 			//see if they have ActiveTicket
 			Player player = getPlayer(sender);
-			PlayerData pdata = new PlayerData(player, lotto);
+			//PlayerData pdata = new PlayerData(player, lotto);
 			TicketManager tman = new TicketManager(lotto);
 			if(!tman.refundTicket(player)){//if the refund was run
 				sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noBet2RefundMsg)));//send the no bet to refund message.

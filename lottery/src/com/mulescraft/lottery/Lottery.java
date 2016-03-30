@@ -3,7 +3,6 @@ package com.mulescraft.lottery;
 
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -23,7 +22,7 @@ public class Lottery extends JavaPlugin {
 	boolean isActive = false;//wether or not the lotto is currently running.
 
 	//Config Vars
-	public String autoStartOpt = "Auto Start Crate Timer";
+	public String autoStartOpt = "Auto Start Lottery Timer";
 	public String lotteryRndTime = "Lottery Round Time in Minutes";
 	public String winningsAmplifier = "Amount to Amplifty Winnings By";
 	public String ticketRange = "TicketMaxPickValue";
@@ -72,7 +71,9 @@ public class Lottery extends JavaPlugin {
 		if (getConfig().get("pingInterval") != null) {
 			this.before = true;
 		}
-		getConfig().options().header("Help Line 1\nHelp Line 2\n");
+		Documentation doc = new Documentation();
+		
+		getConfig().options().header(doc.getDocumentation());
 		listener = new CommandParser(this);
 		this.getCommand("lottery").setExecutor(listener);
 		loadDefaultConfigVars();   

@@ -2,7 +2,6 @@ package com.mulescraft.lottery;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Numbers {
