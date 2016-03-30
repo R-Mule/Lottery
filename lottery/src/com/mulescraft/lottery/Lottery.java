@@ -33,6 +33,12 @@ public class Lottery extends JavaPlugin implements Listener {
 	public String historyRange ="History Range to Show on Command History";
 	public String announceLotteryStart = "Announce Lottery Start";
 	
+	//Sound Section
+	public String soundsEnabled ="Sounds.Enabled"; 
+	public String soundOnWin = "Sounds.SOUND_ON_WIN";
+	public String soundOnBuy = "Sounds.SOUND_ON_BUY";
+
+	
 	//Config Messages
 	public String notEnoughMoneyMsg = "NOT_ENOUGH_MONEY_MESSAGE";
 	public String noBet2RefundMsg = "NO_BET_TO_REFUND_MESSAGE";
@@ -120,6 +126,12 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(ticketRange, 9);
 		getConfig().addDefault(historyRange, 5);
 		getConfig().addDefault(announceLotteryStart, true);
+		
+		//Sound Section
+		getConfig().addDefault(soundsEnabled, true);
+		getConfig().addDefault(soundOnWin, "ENTITY_FIREWORK_LARGE_BLAST");
+		getConfig().addDefault(soundOnBuy, "BLOCK_NOTE_HARP");
+		
 		//custom ChatMessages
 		getConfig().addDefault(notEnoughMoneyMsg,"&2Sorry, but you do not have enough money to place that bet.");
 		getConfig().addDefault(alreadyPlacedBetMsg,"&2Sorry, your bet for this lottery has already been placed.");

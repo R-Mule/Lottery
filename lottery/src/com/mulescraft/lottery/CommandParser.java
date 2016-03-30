@@ -133,7 +133,8 @@ public class CommandParser implements CommandExecutor {
 							TicketManager tman = new TicketManager(lotto);
 							if(tman.addTicket(player,Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
 								lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
-								player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_HARP,100,0);
+								if(lotto.getConfig().getBoolean(lotto.soundsEnabled))
+								player.getWorld().playSound(player.getLocation(), Sound.valueOf(lotto.getConfig().getString(lotto.soundOnBuy)),100,0);
 								String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
 								message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
 								message = lotto.subColors(message);//replace any colors.

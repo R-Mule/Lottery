@@ -8,7 +8,7 @@ public class Documentation {
 	
 	
 	public String getDocumentation(){
-		String message="Lottery Version 1.0.3 Welcome to Lottery!\n";
+		String message="Lottery Version 1.0.4 Welcome to Lottery!\n";
 		message = message.concat("The section below, goes over example config setup, and what each container is used for.\n");
 		message = message.concat("\n");
 		message = message.concat("Auto Start Lottery Timer: true    Wether or not to start lottery on start up.\n");
@@ -17,6 +17,10 @@ public class Documentation {
 		message = message.concat("Amount to Amplify Winnings By: 10.0    If you bet $200 you will get $200.00x10 = $2,000\n");
 		message = message.concat("Ticket Max Pick Value: 9   Valid Ticket Range is between 1-9 INCLUSIVE.\n");
 		message = message.concat("History Range to Show on Command History: 5   When /lottery history is used, the last 5 Lottery Results will be shown.\n");
+		message = message.concat("\n");
+		message = message.concat("Sound Section: FIND SOUNDS HERE: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html\n");
+		message = message.concat("Enabled: true    whether or not sounds are turned on\n");
+		message = message.concat("Exmaple: soundOnWin: ENTITY_FIREWORK_LARGE_BLAST plays the sound on a winning lottery ticket for the winner.\n");
 		message = message.concat("\n");
 		message = message.concat("Messages Section: This section will show ALL the possible message the players will be shown throughout using lottery commands.\n");
 		message = message.concat("Color code examples are shown in these messages and you can customize them. If the message shows something like %amount%\n");

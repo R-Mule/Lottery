@@ -83,7 +83,8 @@ public class TicketManager {
 				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
 					if(onlinePlayer.getUniqueId().equals(playerUUID)){
 						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(amtWon))));
-						onlinePlayer.getWorld().playSound(onlinePlayer.getLocation(), Sound.ENTITY_FIREWORK_LARGE_BLAST,100,0);
+						if(lotto.getConfig().getBoolean(lotto.soundsEnabled))
+							onlinePlayer.getWorld().playSound(onlinePlayer.getLocation(), Sound.valueOf(lotto.getConfig().getString(lotto.soundOnWin)),100,0);
 						messageSent=true;
 					}//end if same player
 				}//end for if the player is online lets tell them they won!
@@ -172,7 +173,6 @@ public class TicketManager {
 				UUID pUUID = UUID.fromString(uuid);
 				OfflinePlayer player = Bukkit.getOfflinePlayer(pUUID);
 				sender.sendMessage(player.getName()+" : "+lotto.atData.getInt(uuid+".LuckyNumber")+" : "+lotto.atData.getDouble(uuid+".BetAmount"));
-
 			}//end for
 		}else{
 			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noActiveTicketsMsg)));
@@ -193,7 +193,8 @@ public class TicketManager {
 			//send message about win or loss.
 			if(lotto.mqData.getBoolean(player.getUniqueId().toString()+"1.Win")){//if they won message
 				player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(lotto.mqData.getDouble(player.getUniqueId().toString()+".1.Amount")))));
-				player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LARGE_BLAST ,100,0);
+				if(lotto.getConfig().getBoolean(lotto.soundsEnabled))
+				player.getWorld().playSound(player.getLocation(), Sound.valueOf(lotto.getConfig().getString(lotto.soundOnWin)) ,100,0);
 			}else{//they lost.
 				player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youLostMessage).replaceAll("%amount%",Double.toString(lotto.mqData.getDouble(player.getUniqueId().toString()+".1.Amount")))));
 			}
