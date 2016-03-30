@@ -101,7 +101,6 @@ public class Lottery extends JavaPlugin {
 	}//end setupEconomy	
 
 	private void loadDefaultConfigVars(){
-		addHelpText();//this adds the support for the top
 
 		//vars used for lottery
 		getConfig().addDefault(autoStartOpt, true);
@@ -137,10 +136,6 @@ public class Lottery extends JavaPlugin {
 		//saveConfig();
 	}//end onDisable()
 
-	public void addHelpText(){
 
-		getConfig().options().header("Help Line 1\nHelp Line 2\n");
-
-	}//end addHelpText()
 
 }//end Lottery Class
