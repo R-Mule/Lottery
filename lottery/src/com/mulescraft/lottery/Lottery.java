@@ -3,15 +3,19 @@ package com.mulescraft.lottery;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.economy.Economy;
 
-public class Lottery extends JavaPlugin {
+public class Lottery extends JavaPlugin implements Listener {
 
 	Server server = this.getServer();
 	ConsoleCommandSender console = server.getConsoleSender();
@@ -63,6 +67,7 @@ public class Lottery extends JavaPlugin {
 	ConfigFile pData = new ConfigFile(this,"PlayerData.yml");
 	ConfigFile lhData = new ConfigFile(this,"LottoHistory.yml");
 	ConfigFile atData = new ConfigFile(this,"ActiveTickets.yml");
+	ConfigFile mqData = new ConfigFile(this,"MessageQue.yml");
 
 	@Override
 	public void onEnable(){
@@ -75,11 +80,14 @@ public class Lottery extends JavaPlugin {
 		if (getConfig().get("pingInterval") != null) {
 			this.before = true;
 		}
+		
 		Documentation doc = new Documentation();
 		
 		getConfig().options().header(doc.getDocumentation());
 		listener = new CommandParser(this);
 		this.getCommand("lottery").setExecutor(listener);
+		Server server = this.getServer();
+		server.getPluginManager().registerEvents(this, this);
 		loadDefaultConfigVars();   
 		console.sendMessage(ChatColor.BLUE+"[Lottery] Config Loaded");
 	    lotTime = new LotteryTimer(this,getConfig().getInt(lotteryRndTime));
@@ -144,6 +152,11 @@ public class Lottery extends JavaPlugin {
 		//saveConfig();
 	}//end onDisable()
 
-
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent e) {//check the message que. See what we have waiting.
+		TicketManager tman = new TicketManager(this);
+		tman.checkPrintMessageInQue(e.getPlayer());
+		Bukkit.broadcastMessage("PLAYER" +e.getPlayer().getDisplayName());
+	}//end onPlayerJoin event
 
 }//end Lottery Class

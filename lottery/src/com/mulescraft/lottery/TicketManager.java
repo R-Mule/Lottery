@@ -77,25 +77,34 @@ public class TicketManager {
 				stats.addWin(amtWon);
 				winners.add(player.getName());//this will be stored in the lottery history
 				lotto.econ.depositPlayer(player, amtWon);//award them their money!
-
+				boolean messageSent = false;//was the person online to receive the message?
 				//reward message! :) if the player is online to receive it.
 				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
 					if(onlinePlayer.getUniqueId().equals(playerUUID)){
 						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(amtWon))));
+						messageSent=true;
 					}//end if same player
 				}//end for if the player is online lets tell them they won!
+				if(!messageSent){
+					storeMessageInQue(true,playerUUID,amtWon,lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber"),winningNum);
+				}//end if message was not sent
 			}else{//LOSER LOSER LOSER LOSER
 				double amtLost = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
 				pData.addLoss(amtLost);
 				stats.checkMostLosses(pData.getTotalLosses());
 				stats.checkBiggestLoss(pData.getBiggestLoss());
 				stats.addLoss(amtLost);
+				boolean messageSent = false;//was the person online to receive the message?
 				//loss message! :( If the player is online to receive it.
 				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
 					if(onlinePlayer.getUniqueId().equals(playerUUID)){
 						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youLostMessage).replaceAll("%amount%",Double.toString(lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount")))));
+						messageSent = true;
 					}//end if same player
 				}//end for if the player is online lets tell them they lost.
+				if(!messageSent){
+					storeMessageInQue(true,playerUUID,amtLost,lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber"),winningNum);
+				}//end if message was not sent
 			}//end add loss
 			//now time to remove the UUID from active list!
 			lotto.atData.set(player.getUniqueId().toString(), null);
@@ -167,4 +176,26 @@ public class TicketManager {
 			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noActiveTicketsMsg)));
 		}//end else no active lottery
 	}//end printActiveTickets()
+	
+	public void storeMessageInQue(boolean win,UUID uuid,double amount,int yourNumber,int winningNumber){
+		//I put 1 in for now, this will allow it to store multiple tickets later if needed.
+		lotto.mqData.set(uuid.toString()+".1.Win", win);
+		lotto.mqData.set(uuid.toString()+".1.Amount", amount);
+		lotto.mqData.set(uuid.toString()+".1.LuckyNumber", yourNumber);
+		lotto.mqData.set(uuid.toString()+".1.WinningNumber", winningNumber);
+		lotto.mqData.save();
+	}//end storeMessageInQue()
+	
+	public void checkPrintMessageInQue(Player player){
+		if(lotto.mqData.getString(player.getUniqueId().toString())!=null){
+			//send message about win or loss.
+			if(lotto.mqData.getBoolean(player.getUniqueId().toString()+"1.Win")){//if they won message
+				player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(lotto.mqData.getDouble(player.getUniqueId().toString()+".1.Amount")))));
+			}else{//they lost.
+				player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youLostMessage).replaceAll("%amount%",Double.toString(lotto.mqData.getDouble(player.getUniqueId().toString()+".1.Amount")))));
+			}
+			lotto.mqData.set(player.getUniqueId().toString(),null);
+			lotto.mqData.save();
+		}
+	}//end checkPrintMessageInQue()
 }//end TicketManager Class
