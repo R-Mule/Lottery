@@ -3,7 +3,6 @@ package com.mulescraft.lottery;
 
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -156,7 +155,6 @@ public class Lottery extends JavaPlugin implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {//check the message que. See what we have waiting.
 		TicketManager tman = new TicketManager(this);
 		tman.checkPrintMessageInQue(e.getPlayer());
-		Bukkit.broadcastMessage("PLAYER" +e.getPlayer().getDisplayName());
 	}//end onPlayerJoin event
 
 }//end Lottery Class

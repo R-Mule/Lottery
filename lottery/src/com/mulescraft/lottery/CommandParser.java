@@ -3,6 +3,7 @@ package com.mulescraft.lottery;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -128,10 +129,11 @@ public class CommandParser implements CommandExecutor {
 					Player player = getPlayer(sender);
 					if(lotto.econ.getBalance(player)>=Double.parseDouble(args[2])){//can you afford this ticket?
 						if(number.isValidNumber(Integer.parseInt(args[1]),player)){
-							lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
 							//create ticket in ActiveTickets.yml 
 							TicketManager tman = new TicketManager(lotto);
 							if(tman.addTicket(player,Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
+								lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
+								player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_HARP,100,0);
 								String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
 								message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
 								message = lotto.subColors(message);//replace any colors.
