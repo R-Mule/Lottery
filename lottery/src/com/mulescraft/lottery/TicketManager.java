@@ -60,7 +60,7 @@ public class TicketManager {
 		lotteryNum = lotto.lhData.getInt("TotalLotteriesPlayed");
 		lotteryNum++;//add one since this one just ended.
 		lotto.lhData.set("TotalLotteriesPlayed", lotteryNum);//store it!
-
+		lotto.lhData.save();//attempt to fix the missing lottery win.
 		Bukkit.broadcastMessage(lotto.subColors(lotto.getConfig().getString(lotto.lotteryEndServerMsg).replaceAll("%winningnumber%", Integer.toString(winningNum))));//winning number server msg
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
 		for(String uuid:activeUUIDS){//for all active tickets.
