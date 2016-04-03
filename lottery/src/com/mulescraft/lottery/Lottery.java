@@ -1,6 +1,8 @@
 package com.mulescraft.lottery;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
@@ -38,6 +40,14 @@ public class Lottery extends JavaPlugin implements Listener {
 	public String soundOnWin = "Sounds.SOUND_ON_WIN";
 	public String soundOnBuy = "Sounds.SOUND_ON_BUY";
 
+	//Countdown Section
+	public String countDownAnnounceEnabled="Countdown.Enabled";
+	public String countDownAnnounceHr = "Countdown.Hrs";
+	public String countDownAnnounceMin = "Countdown.Min";
+	public String countDownAnnounceSec = "Countdown.Sec";
+	List<Integer> minList = new ArrayList<Integer>();
+	List<Integer> hrsList = new ArrayList<Integer>();
+	List<Integer> secList = new ArrayList<Integer>();
 	
 	//Config Messages
 	public String notEnoughMoneyMsg = "NOT_ENOUGH_MONEY_MESSAGE";
@@ -131,6 +141,29 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(soundsEnabled, true);
 		getConfig().addDefault(soundOnWin, "ENTITY_FIREWORK_LARGE_BLAST");
 		getConfig().addDefault(soundOnBuy, "BLOCK_NOTE_HARP");
+		
+		//Countdown Section
+		getConfig().addDefault(countDownAnnounceEnabled, true);
+		hrsList.add(1);
+		minList.add(45);
+		minList.add(30);
+		minList.add(15);
+		minList.add(5);
+		minList.add(1);
+		secList.add(30);
+		secList.add(10);
+		secList.add(9);
+		secList.add(8);
+		secList.add(7);
+		secList.add(6);
+		secList.add(5);
+		secList.add(4);
+		secList.add(3);
+		secList.add(2);
+		secList.add(1);
+		getConfig().addDefault(countDownAnnounceHr, hrsList);
+		getConfig().addDefault(countDownAnnounceMin, minList);
+		getConfig().addDefault(countDownAnnounceSec, secList);	
 		
 		//custom ChatMessages
 		getConfig().addDefault(notEnoughMoneyMsg,"&2Sorry, but you do not have enough money to place that bet.");

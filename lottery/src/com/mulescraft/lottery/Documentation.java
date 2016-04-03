@@ -8,10 +8,10 @@ public class Documentation {
 	
 	
 	public String getDocumentation(){
-		String message="Lottery Version 1.0.4 Welcome to Lottery!\n";
+		String message="Lottery Version 1.0.5 Welcome to Lottery!\n";
 		message = message.concat("The section below, goes over example config setup, and what each container is used for.\n");
 		message = message.concat("\n");
-		message = message.concat("Auto Start Lottery Timer: true    Wether or not to start lottery on start up.\n");
+		message = message.concat("Auto Start Lottery Timer: true    Whether or not to start lottery on start up.\n");
 		message = message.concat("\n");
 		message = message.concat("Lottery Round Time in Minutes: 60    The amount of time in minutes each lottery should run for.\n");
 		message = message.concat("Amount to Amplify Winnings By: 10.0    If you bet $200 you will get $200.00x10 = $2,000\n");
@@ -21,6 +21,10 @@ public class Documentation {
 		message = message.concat("Sound Section: FIND SOUNDS HERE: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html\n");
 		message = message.concat("Enabled: true    whether or not sounds are turned on\n");
 		message = message.concat("Exmaple: soundOnWin: ENTITY_FIREWORK_LARGE_BLAST plays the sound on a winning lottery ticket for the winner.\n");
+		message = message.concat("\n");
+		message = message.concat("Countdown Section: \n");
+		message = message.concat("Enabled: true  whether or not to broadcast countdown timers to the server \n");
+		message = message.concat("Hrs.Mins.Secs. Add or remove them as you wish to set your own frequency of announcement. \n");
 		message = message.concat("\n");
 		message = message.concat("Messages Section: This section will show ALL the possible message the players will be shown throughout using lottery commands.\n");
 		message = message.concat("Color code examples are shown in these messages and you can customize them. If the message shows something like %amount%\n");

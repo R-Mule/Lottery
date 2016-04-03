@@ -53,6 +53,7 @@ public class TicketManager {
 		return false;//found no ticket.
 	}//end refundTicket()
 
+	
 	public void lotteryEnded(){//if this is called. Then the lottery has ended. Award all tickets who won , and update stats with win/loss.
 		//Time to get a random number!
 		Numbers rand = new Numbers(lotto);
@@ -61,6 +62,8 @@ public class TicketManager {
 		lotteryNum++;//add one since this one just ended.
 		lotto.lhData.set("TotalLotteriesPlayed", lotteryNum);//store it!
 		lotto.lhData.save();//attempt to fix the missing lottery win.
+		lotto.atData.save();
+		lotto.mqData.save();
 		Bukkit.broadcastMessage(lotto.subColors(lotto.getConfig().getString(lotto.lotteryEndServerMsg).replaceAll("%winningnumber%", Integer.toString(winningNum))));//winning number server msg
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
 		for(String uuid:activeUUIDS){//for all active tickets.
@@ -68,46 +71,11 @@ public class TicketManager {
 			OfflinePlayer player = Bukkit.getOfflinePlayer(playerUUID);//get OfflinePlayer from the UUID
 			PlayerData pData = new PlayerData(player,lotto);//send OfflinePlayer to pData
 			ServerStats stats= new ServerStats(player,lotto);//send OfflinePlayer to stats
-
+			
 			if(lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber")==winningNum){//IF LUCKY NUMBER MATCHES WINNER WINNER WINNER WINNER
-				double amtWon = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
-				amtWon = amtWon * lotto.getConfig().getDouble(lotto.winningsAmplifier);
-				pData.addWin(amtWon);//send bet amount to addWin with OfflinePlayer
-				stats.checkMostWins(pData.getTotalWins());
-				stats.checkBiggestWin(pData.getBiggestWin());
-				stats.addWin(amtWon);
-				winners.add(player.getName());//this will be stored in the lottery history
-				lotto.econ.depositPlayer(player, amtWon);//award them their money!
-				boolean messageSent = false;//was the person online to receive the message?
-				//reward message! :) if the player is online to receive it.
-				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
-					if(onlinePlayer.getUniqueId().equals(playerUUID)){
-						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(amtWon))));
-						if(lotto.getConfig().getBoolean(lotto.soundsEnabled))
-							onlinePlayer.getWorld().playSound(onlinePlayer.getLocation(), Sound.valueOf(lotto.getConfig().getString(lotto.soundOnWin)),100,0);
-						messageSent=true;
-					}//end if same player
-				}//end for if the player is online lets tell them they won!
-				if(!messageSent){
-					storeMessageInQue(true,playerUUID,amtWon,lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber"),winningNum);
-				}//end if message was not sent
+				winConditions(pData,stats,player,playerUUID);
 			}else{//LOSER LOSER LOSER LOSER
-				double amtLost = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
-				pData.addLoss(amtLost);
-				stats.checkMostLosses(pData.getTotalLosses());
-				stats.checkBiggestLoss(pData.getBiggestLoss());
-				stats.addLoss(amtLost);
-				boolean messageSent = false;//was the person online to receive the message?
-				//loss message! :( If the player is online to receive it.
-				for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
-					if(onlinePlayer.getUniqueId().equals(playerUUID)){
-						onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youLostMessage).replaceAll("%amount%",Double.toString(lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount")))));
-						messageSent = true;
-					}//end if same player
-				}//end for if the player is online lets tell them they lost.
-				if(!messageSent){
-					storeMessageInQue(true,playerUUID,amtLost,lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber"),winningNum);
-				}//end if message was not sent
+				loseConditions(pData,stats,player,playerUUID);
 			}//end add loss
 			//now time to remove the UUID from active list!
 			lotto.atData.set(player.getUniqueId().toString(), null);
@@ -123,7 +91,49 @@ public class TicketManager {
 		lotto.lhData.save();//save our winners!
 	}//end lotteryEnded()
 
+	public void loseConditions(PlayerData pData,ServerStats stats, OfflinePlayer player,UUID playerUUID){
+		double amtLost = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
+		pData.addLoss(amtLost);
+		stats.checkMostLosses(pData.getTotalLosses());
+		stats.checkBiggestLoss(pData.getBiggestLoss());
+		stats.addLoss(amtLost);
+		boolean messageSent = false;//was the person online to receive the message?
+		//loss message! :( If the player is online to receive it.
+		for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+			if(onlinePlayer.getUniqueId().equals(playerUUID)){
+				onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youLostMessage).replaceAll("%amount%",Double.toString(lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount")))));
+				messageSent = true;
+			}//end if same player
+		}//end for if the player is online lets tell them they lost.
+		if(!messageSent){
+			storeMessageInQue(true,playerUUID,amtLost,lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber"),winningNum);
+		}//end if message was not sent
+	}
 
+	public void winConditions(PlayerData pData,ServerStats stats, OfflinePlayer player,UUID playerUUID){
+		double amtWon = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
+		amtWon = amtWon * lotto.getConfig().getDouble(lotto.winningsAmplifier);
+		pData.addWin(amtWon);//send bet amount to addWin with OfflinePlayer
+		stats.checkMostWins(pData.getTotalWins());
+		stats.checkBiggestWin(pData.getBiggestWin());
+		stats.addWin(amtWon);
+		winners.add(player.getName());//this will be stored in the lottery history
+		lotto.econ.depositPlayer(player, amtWon);//award them their money!
+		boolean messageSent = false;//was the person online to receive the message?
+		//reward message! :) if the player is online to receive it.
+		for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+			if(onlinePlayer.getUniqueId().equals(playerUUID)){
+				onlinePlayer.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.youWonMessage).replaceAll("%amount%",Double.toString(amtWon))));
+				if(lotto.getConfig().getBoolean(lotto.soundsEnabled))
+					onlinePlayer.getWorld().playSound(onlinePlayer.getLocation(), Sound.valueOf(lotto.getConfig().getString(lotto.soundOnWin)),100,0);
+				messageSent=true;
+			}//end if same player
+		}//end for if the player is online lets tell them they won!
+		if(!messageSent){
+			storeMessageInQue(true,playerUUID,amtWon,lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber"),winningNum);
+		}//end if message was not sent
+	}
+	
 	public void printLotteryHistory(CommandSender sender){//uses number to print from config.
 		int range = lotto.getConfig().getInt(lotto.historyRange);
 		if(lotto.lhData.getInt("TotalLotteriesPlayed")!=0){
