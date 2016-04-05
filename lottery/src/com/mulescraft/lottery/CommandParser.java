@@ -46,7 +46,7 @@ public class CommandParser implements CommandExecutor {
 						if(lotto.isActive){
 							lotto.lotTime.printRemainingTime(sender);
 						}else{
-							sender.sendMessage(lotto.subColors(lotto.noActiveLotteryMsg));//lotto not running right now message
+							sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noActiveLotteryMsg)));
 						}//end else no time to show
 					}else if(args[0].equalsIgnoreCase("stats")&&sender.hasPermission("lottery.stats")){
 						statsCommand(sender,cmd,label,args);
@@ -58,7 +58,7 @@ public class CommandParser implements CommandExecutor {
 							TicketManager tman = new TicketManager(lotto);
 							tman.printActiveTickets(sender);//print that active info!!
 						}else{
-							sender.sendMessage(lotto.subColors(lotto.getConfig().getString((lotto.noActiveLotteryMsg))));//lotto not running right now message
+							sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noActiveLotteryMsg)));//lotto not running right now message
 						}//end else
 					}else{
 						printCommandMenu(sender);

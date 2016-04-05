@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 public class TicketManager {
 	Lottery lotto;
 	List<String> activeUUIDS = new ArrayList<String>();
-	List<String> winners = new ArrayList<String>();
 	int winningNum=0;
 	int lotteryNum=0;
 
@@ -43,6 +42,7 @@ public class TicketManager {
 			message = lotto.subColors(message);//sub colors in from config.
 			message = replaceVars(pdata.getLottoNumber(),pdata.getBetAmt(),message);//replace %% messages with amounts.
 			player.sendMessage(message);//ticket refunded message
+			lotto.econ.depositPlayer(player, pdata.getBetAmt());//Actually REFUND their money....
 			lotto.atData.set(player.getUniqueId().toString(), null);
 			activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
 			activeUUIDS.remove(player.getUniqueId().toString());
@@ -56,14 +56,18 @@ public class TicketManager {
 	
 	public void lotteryEnded(){//if this is called. Then the lottery has ended. Award all tickets who won , and update stats with win/loss.
 		//Time to get a random number!
+		List<String> winners = new ArrayList<String>();
 		Numbers rand = new Numbers(lotto);
 		winningNum = rand.findRandom(lotto.getConfig().getInt(lotto.ticketRange));
 		lotteryNum = lotto.lhData.getInt("TotalLotteriesPlayed");
 		lotteryNum++;//add one since this one just ended.
 		lotto.lhData.set("TotalLotteriesPlayed", lotteryNum);//store it!
 		lotto.lhData.save();//attempt to fix the missing lottery win.
+		lotto.lhData.reload();
 		lotto.atData.save();
+		lotto.atData.reload();
 		lotto.mqData.save();
+		lotto.mqData.reload();
 		Bukkit.broadcastMessage(lotto.subColors(lotto.getConfig().getString(lotto.lotteryEndServerMsg).replaceAll("%winningnumber%", Integer.toString(winningNum))));//winning number server msg
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
 		for(String uuid:activeUUIDS){//for all active tickets.
@@ -72,23 +76,25 @@ public class TicketManager {
 			PlayerData pData = new PlayerData(player,lotto);//send OfflinePlayer to pData
 			ServerStats stats= new ServerStats(player,lotto);//send OfflinePlayer to stats
 			
-			if(lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber")==winningNum){//IF LUCKY NUMBER MATCHES WINNER WINNER WINNER WINNER
-				winConditions(pData,stats,player,playerUUID);
+			if(lotto.atData.getInt(uuid+".LuckyNumber")==winningNum){//IF LUCKY NUMBER MATCHES WINNER WINNER WINNER WINNER
+				winConditions(pData,stats,player,playerUUID,winners);
 			}else{//LOSER LOSER LOSER LOSER
 				loseConditions(pData,stats,player,playerUUID);
 			}//end add loss
 			//now time to remove the UUID from active list!
-			lotto.atData.set(player.getUniqueId().toString(), null);
+			lotto.atData.set(uuid, null);
 		}//end for all the active UUIDS in the arraylist!
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
 		activeUUIDS.clear();
 		lotto.atData.set("Active UUIDS", activeUUIDS);//Time for new beginnings!
 		lotto.atData.save();//finished doing modification
-
+		lotto.atData.reload();
 		lotto.lhData.set(lotteryNum+".WinningNumber",winningNum);
 		lotto.lhData.set(lotteryNum+".Winners", winners);
-		winners.clear();
 		lotto.lhData.save();//save our winners!
+		lotto.lhData.reload();
+		winners.clear();
+
 	}//end lotteryEnded()
 
 	public void loseConditions(PlayerData pData,ServerStats stats, OfflinePlayer player,UUID playerUUID){
@@ -110,14 +116,14 @@ public class TicketManager {
 		}//end if message was not sent
 	}//end loseConditions()
 
-	public void winConditions(PlayerData pData,ServerStats stats, OfflinePlayer player,UUID playerUUID){
+	public void winConditions(PlayerData pData,ServerStats stats, OfflinePlayer player,UUID playerUUID,List<String>winners){
 		double amtWon = lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
 		amtWon = amtWon * lotto.getConfig().getDouble(lotto.winningsAmplifier);
 		pData.addWin(amtWon);//send bet amount to addWin with OfflinePlayer
 		stats.checkMostWins(pData.getTotalWins(playerUUID));
 		stats.checkBiggestWin(pData.getBiggestWin(playerUUID));
 		stats.addWin(amtWon);
-		winners.add(player.getName());//this will be stored in the lottery history
+		winners.add(player.getPlayer().getDisplayName());//this will be stored in the lottery history
 		lotto.econ.depositPlayer(player, amtWon);//award them their money!
 		boolean messageSent = false;//was the person online to receive the message?
 		//reward message! :) if the player is online to receive it.
@@ -144,22 +150,23 @@ public class TicketManager {
 			}else{
 				i=lotto.lhData.getInt("TotalLotteriesPlayed")-range;
 			}
-			List<String> winrs = new ArrayList<String>();
+			
 			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.showHistoryMsg).replaceAll("%number%",Integer.toString(range) )));
 			while(i<=lotto.lhData.getInt("TotalLotteriesPlayed")){
 
 				sender.sendMessage("Lottery Number: "+i+" Winning Number: "+lotto.lhData.getInt(Integer.toString(i)+".WinningNumber"));
-
-				winrs = lotto.lhData.getStringList(Integer.toString(i)+".Winners");
-				if(winrs.isEmpty()){
+				
+				List<String> winners = lotto.lhData.getStringList(Integer.toString(i)+".Winners");
+				if(winners.isEmpty()){
 					sender.sendMessage("Winners: None");
 				}
 				else{
 					sender.sendMessage("Winners: ");
+					for(String player:winners){//for all the winners
+						sender.sendMessage(lotto.subColors(player));
+					}//end for all the winners.
 				}
-				for(String player:winrs){//for all the winners
-					sender.sendMessage(player);
-				}//end for all the winners.
+				
 				i++;
 			}//end while the range
 
