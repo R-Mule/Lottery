@@ -1,5 +1,7 @@
 package com.mulescraft.lottery;
 
+import java.util.UUID;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -56,49 +58,37 @@ public class PlayerData {
 		lotto.pData.save();//modified PlayerData.yml. Save it!
 	}//end addLoss()
 
-	public int getTotalWins(){
-		if(offPlayer==null)
-			offPlayer = player;
-		return lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalWins");//should return 0 if never won.
+	public int getTotalWins(UUID uuid){
+		return lotto.pData.getInt(uuid.toString()+".TotalWins");//should return 0 if never won.
 	}//end getTotalWins()
 
-	public int getTotalLosses(){
-		if(offPlayer==null)
-			offPlayer = player;
+	public int getTotalLosses(UUID uuid){
 		return lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalLosses");//should return 0 if never lost.
 	}//end getTotalLosses()
 
-	public double getBiggestWin(){
-		if(offPlayer==null)
-			offPlayer = player;
+	public double getBiggestWin(UUID uuid){
 		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".BiggestWin");//should return 0 if never won.
 	}//end getBiggestWin()
 
-	public double getBiggestLoss(){
-		if(offPlayer==null)
-			offPlayer = player;
+	public double getBiggestLoss(UUID uuid){
 		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".BiggestLoss");//should return 0 if never lost.
 	}//end getBiggestLoss()
 
-	public double getTotalAmtWon(){
-		if(offPlayer==null)
-			offPlayer = player;
+	public double getTotalAmtWon(UUID uuid){
 		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountWon");//should return 0 if never won.
 	}//end getTotalAmtWon
 
-	public double getTotalAmtLost(){
-		if(offPlayer==null)
-			offPlayer = player;
+	public double getTotalAmtLost(UUID uuid){
 		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountLost");//should return 0 if never lost.
 	}//end getTotalAmtLost
 
 	public void printPlayerStats(){//CANNOT BE CALLED WHEN OFFLINE PLAYER CTOR IS USED!
-		player.sendMessage("Your Total Wins: "+getTotalWins());
-		player.sendMessage("Your Total Losses: "+getTotalLosses());
-		player.sendMessage("Your Biggest Win: $"+getBiggestWin());
-		player.sendMessage("Your Biggest Loss: $"+getBiggestLoss());
-		player.sendMessage("Your Total Amount Won: $"+getTotalAmtWon());
-		player.sendMessage("Your Total Amount Lost: $"+getTotalAmtLost());
+		player.sendMessage("Your Total Wins: "+getTotalWins(player.getUniqueId()));
+		player.sendMessage("Your Total Losses: "+getTotalLosses(player.getUniqueId()));
+		player.sendMessage("Your Biggest Win: $"+getBiggestWin(player.getUniqueId()));
+		player.sendMessage("Your Biggest Loss: $"+getBiggestLoss(player.getUniqueId()));
+		player.sendMessage("Your Total Amount Won: $"+getTotalAmtWon(player.getUniqueId()));
+		player.sendMessage("Your Total Amount Lost: $"+getTotalAmtLost(player.getUniqueId()));
 	}//end printPlayerStats
 
 
