@@ -1,5 +1,7 @@
 package com.mulescraft.lottery;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
@@ -27,8 +29,17 @@ public class PlayerData {
 		this.offPlayer = p;
 	}//end constructor
 
-	public int getLottoNumber(){//returns -1 if they have no number.
-		return lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber");
+	public List<Integer> getLottoNumbers(){//returns null if they have no number.  //OLD RETURNED INT
+		List<Integer> activeNumbers = new ArrayList<Integer>();
+		for(int n=1;n<=lotto.atData.getInt(player.getUniqueId().toString()+".TotalActiveTickets");n++){
+			if(n==0){
+				return null;
+			}else{
+				activeNumbers.add(lotto.atData.getInt(player.getUniqueId().toString()+n));
+			}
+		}
+		return activeNumbers;
+		//return lotto.atData.getInt(player.getUniqueId().toString()+".LuckyNumber"); OLD
 	}//end getNumber()
 
 

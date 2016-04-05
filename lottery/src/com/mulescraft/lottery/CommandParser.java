@@ -129,6 +129,7 @@ public class CommandParser implements CommandExecutor {
 					Player player = getPlayer(sender);
 					if(lotto.econ.getBalance(player)>=Double.parseDouble(args[2])){//can you afford this ticket?
 						if(number.isValidNumber(Integer.parseInt(args[1]),player)){
+							//INSERT HERE, IF TICKET IS NOT ALREADY ACTIVE!
 							//create ticket in ActiveTickets.yml 
 							TicketManager tman = new TicketManager(lotto);
 							if(tman.addTicket(player,Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
