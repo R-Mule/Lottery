@@ -135,7 +135,7 @@ public class Lottery extends JavaPlugin implements Listener {
 		//vars used for lottery
 		getConfig().addDefault(autoStartOpt, true);
 		getConfig().addDefault(lotteryRndTime, 60);
-		getConfig().addDefault(winningsAmplifier,10.0);
+		getConfig().addDefault(winningsAmplifier,8.0);
 		getConfig().addDefault(ticketRange, 9);
 		getConfig().addDefault(historyRange, 5);
 		getConfig().addDefault(announceLotteryStart, true);
