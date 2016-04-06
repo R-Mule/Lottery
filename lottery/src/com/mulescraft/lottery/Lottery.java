@@ -259,7 +259,7 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(pStatsTotalWinsMsg, "&6Your Total Wins:&2 %wins%");
 		getConfig().addDefault(pStatsTotalLossesMsg, "&6Your Total Losses:&2 %losses%");
 		getConfig().addDefault(pStatsBiggestWinMsg, "&6Your Biggest Win:&2 $%wins%");
-		getConfig().addDefault(pStatsBiggestLossMsg, "&6Your BiggestLoss:&2 $%losses%");
+		getConfig().addDefault(pStatsBiggestLossMsg, "&6Your Biggest Loss:&2 $%losses%");
 		getConfig().addDefault(pStatsTotalAmtWonMsg, "&6Your Total Amount Won:&2 $%wins%");
 		getConfig().addDefault(pStatsTotalAmtLostMsg, "&6Your Total Amount Lost:&2 $%losses%");
 		
