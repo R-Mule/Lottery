@@ -8,7 +8,7 @@ public class Documentation {
 	
 	
 	public String getDocumentation(){
-		String message="Lottery Version 1.0.6 Welcome to Lottery!\n";
+		String message="Lottery Version 1.0.7 Welcome to Lottery!\n";
 		message = message.concat("The section below, goes over example config setup, and what each container is used for.\n");
 		message = message.concat("\n");
 		message = message.concat("Auto Start Lottery Timer: true    Whether or not to start lottery on start up.\n");

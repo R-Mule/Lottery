@@ -43,8 +43,8 @@ public class PlayerData {
 	}//end getNumber()
 
 
-	public double getBetAmt(){
-		return lotto.atData.getDouble(player.getUniqueId().toString()+".BetAmount");
+	public double getBetAmt(int ticketNumber){
+		return lotto.atData.getDouble(player.getUniqueId().toString()+"."+ticketNumber+".BetAmount");
 	}//end getBidAmt()
 
 	public void addWin(double amtWon){
@@ -74,23 +74,23 @@ public class PlayerData {
 	}//end getTotalWins()
 
 	public int getTotalLosses(UUID uuid){
-		return lotto.pData.getInt(offPlayer.getUniqueId().toString()+".TotalLosses");//should return 0 if never lost.
+		return lotto.pData.getInt(uuid+".TotalLosses");//should return 0 if never lost.
 	}//end getTotalLosses()
 
 	public double getBiggestWin(UUID uuid){
-		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".BiggestWin");//should return 0 if never won.
+		return lotto.pData.getDouble(uuid+".BiggestWin");//should return 0 if never won.
 	}//end getBiggestWin()
 
 	public double getBiggestLoss(UUID uuid){
-		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".BiggestLoss");//should return 0 if never lost.
+		return lotto.pData.getDouble(uuid+".BiggestLoss");//should return 0 if never lost.
 	}//end getBiggestLoss()
 
 	public double getTotalAmtWon(UUID uuid){
-		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountWon");//should return 0 if never won.
+		return lotto.pData.getDouble(uuid+".TotalAmountWon");//should return 0 if never won.
 	}//end getTotalAmtWon
 
 	public double getTotalAmtLost(UUID uuid){
-		return lotto.pData.getDouble(offPlayer.getUniqueId().toString()+".TotalAmountLost");//should return 0 if never lost.
+		return lotto.pData.getDouble(uuid+".TotalAmountLost");//should return 0 if never lost.
 	}//end getTotalAmtLost
 
 	public void printPlayerStats(){//CANNOT BE CALLED WHEN OFFLINE PLAYER CTOR IS USED!
@@ -101,6 +101,7 @@ public class PlayerData {
 		player.sendMessage("Your Total Amount Won: $"+getTotalAmtWon(player.getUniqueId()));
 		player.sendMessage("Your Total Amount Lost: $"+getTotalAmtLost(player.getUniqueId()));
 	}//end printPlayerStats
+
 
 
 }//end PlayerData class

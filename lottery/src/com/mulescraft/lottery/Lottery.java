@@ -71,6 +71,9 @@ public class Lottery extends JavaPlugin implements Listener {
 	public String activeTicketsMsg = "ACTIVE_TICKETS_MSG";
 	public String noActiveTicketsMsg = "NO_ACTIVE_TICKETS_MSG";
 	public String startMsg="LOTTERY_START_MESSAGE";
+	public String alreadyActiveTicketMsg = "ALREADY_ACTIVE_TICKET_MSG";
+	public String noBetOnThatNumberMsg = "NO_BET_ON_THAT_NUMBER_MSG";
+	public String refundSyntaxErrorMsg = "REFUND_SYNTAX_ERROR_MSG";
 	
 	public LotteryTimer lotTime;
 	//locale? Might change this later, since each message is going to be custom.
@@ -170,23 +173,26 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(alreadyPlacedBetMsg,"&2Sorry, your bet for this lottery has already been placed.");
 		getConfig().addDefault(noBet2RefundMsg,"&2You currently have no active bets to be refunded.");
 		getConfig().addDefault(refundBeforeBetAgainMsg,"&2You must run &6/lottery refund&2 before betting again.");
-		getConfig().addDefault(betRefundedMsg, "&2Your bet of %amountbet% on number %luckynumber% has been refunded.");
-		getConfig().addDefault(betAcceptedMsg,"&2Your bet of %amountbet% on number %luckynumber% has been accepted.");
+		getConfig().addDefault(betRefundedMsg, "&2Your bet of &6$%amountbet% &2on number &6%luckynumber% &2has been refunded.");
+		getConfig().addDefault(betAcceptedMsg,"&2Your bet of &6$%amountbet% &2on number &6%luckynumber% &2has been accepted.");
 		getConfig().addDefault(noActiveLotteryMsg, "&2There is not a lottery running to bet, get refunds, or time remaining on currently.");
 		getConfig().addDefault(missingSelfServerMsg, "&2You need to use &6/lottery stats self &2or &6/lottery stats server &2.");
 		getConfig().addDefault(invalidNumberArguments,"&2The values entered are not numbers. Please use &6/lottery buy <luckynumber> <amount> &2with no <>");
 		getConfig().addDefault(missingBuyArguments, "&2Command Usage: &6/buy <luckynumber> <amount>");
-		getConfig().addDefault(youWonMessage, "&2CONGRATULATIONS! YOU JUST WON $%amount% AT THE LOTTERY!");
-		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket did not win, you lost $%amount% at the lottery.");
+		getConfig().addDefault(youWonMessage, "&2CONGRATULATIONS! YOU JUST WON &6$%amount% &2AT THE LOTTERY!");
+		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket did not win, you lost&6 $%amount% &2at the lottery.");
 		getConfig().addDefault(notStrtAlrdyStrtdMsg, "&2Cannot start the lottery. It is already running.");
 		getConfig().addDefault(notStpdAlrdyStpdMsg, "&2Cannot stop the lottery. It is already stopped.");
-		getConfig().addDefault(lotteryEndServerMsg, "&2The Lottery has ended. The winning number was: %winningnumber%");
-		getConfig().addDefault(showHistoryMsg, "&2%number% most recent Lottery Results");
+		getConfig().addDefault(lotteryEndServerMsg, "&2The Lottery has ended. The winning number was: &6%winningnumber%");
+		getConfig().addDefault(showHistoryMsg, "&6%number% &2most recent Lottery Results");
 		getConfig().addDefault(noHistoryMsg, "&2There are no lottery results recorded yet.");
-		getConfig().addDefault(notValidNumMsg, "&2Please enter a number between 1 and %range%");
-		getConfig().addDefault(activeTicketsMsg, "&2~Current Tickets For Lottery Number: %number% ~");
+		getConfig().addDefault(notValidNumMsg, "&2Please enter a number between&6 1 &2and&6 %range%");
+		getConfig().addDefault(activeTicketsMsg, "&2~Current Tickets For Lottery Number:&6 %number% ~");
 		getConfig().addDefault(noActiveTicketsMsg, "&2There are currently no active tickets to display.");
 		getConfig().addDefault(startMsg, "&2The Lottery has started! Use &6/lottery&2 to play!");
+		getConfig().addDefault(alreadyActiveTicketMsg, "&2A ticket with lucky number &6%number% &2already has a bet on it from you. Try another number?");
+		getConfig().addDefault(noBetOnThatNumberMsg,"&2There is currently no bet on number &6%number% &2by you.");
+		getConfig().addDefault(refundSyntaxErrorMsg,"&2Please use &6/refund <luckyNumber> &2where <luckyNumber> is the number you bet on. Try &6/lottery current&2 to see active bets.");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}//end loadDefaultConfigVars

@@ -26,8 +26,10 @@ public class TicketManager {
 		for(int i=1;i<=totalActTkts;i++){
 			if(lotto.atData.getInt(player.getUniqueId().toString()+"."+i+".LuckyNumber")==luckyNumber){
 				return false; //CANNOT ADD THE TICKET. IT ALREADY EXISTS!
-			}
-		}
+			}//end if check see if ticket already exists.
+		}//end for totalActiveTickets
+		
+		//it must not already exist. Add new ticket.
 			totalActTkts++;
 			lotto.atData.set(player.getUniqueId().toString()+"."+ (totalActTkts)+".LuckyNumber",luckyNumber);
 			lotto.atData.set(player.getUniqueId().toString()+"."+ (totalActTkts)+".BetAmount",amount);
@@ -40,10 +42,63 @@ public class TicketManager {
 			lotto.atData.save();
 			lotto.atData.reload();
 		return true;//Ticket Added!
+		
+		/* This might be re-added LATER. If I want to add an option to RESTRICT max# of tickets.. Keep this logic it is useful.
+		else if(sender.hasPermission("lottery.refund")){
+			String message = lotto.getConfig().getString(lotto.refundBeforeBetAgainMsg); //there is already an active bid! use /lottery refund to remove it. IF THEY HAVE THAT PERMISSION!
+			sender.sendMessage(lotto.subColors(message));//send the message after swapping colors.
+		}else{
+			String message = lotto.getConfig().getString(lotto.alreadyPlacedBetMsg);//sorry you have already placed your bid! Message.
+			sender.sendMessage(lotto.subColors(message));
+		}//end else bid already placed msg.
+		*/
+		
 	}//end addTicket()
 
-	public boolean refundTicket(Player player){
-		//NEED TO SEE IF TICKET CAN BE REFUNDED
+	public void refundTicket(Player player,int luckyNumber){
+		String uuid = player.getUniqueId().toString();
+		int position=-1;
+		int totalTickets=lotto.atData.getInt(uuid+".TotalActiveTickets");
+		for(int curTicket=1;curTicket<=totalTickets;curTicket++){//for all the active tickets.
+			if(lotto.atData.getInt(uuid+"."+curTicket+".LuckyNumber")==luckyNumber){//if I found the ticket.
+				position=curTicket;
+			}//end if
+			if(curTicket==lotto.atData.getInt(uuid+".TotalActiveTickets")&&position==-1){//We hit the end, and we didn't find the ticket. Uh oh. You must not have one! Send u a message.
+				player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.noBetOnThatNumberMsg).replaceAll("%number%", Integer.toString(luckyNumber))));//send the no bet to refund message.;
+			}//end if
+		}//end for all the active tickets.
+		if(position!=-1&&position!=totalTickets){//if we found it AND it isn't the last ticket.. We have work to do.
+			PlayerData pData = new PlayerData(player,lotto);
+			String message = lotto.getConfig().getString(lotto.betRefundedMsg);//get the betRefundedMessage from config.
+			message = lotto.subColors(message);//sub colors in from config.
+			message = replaceVars(luckyNumber,pData.getBetAmt(luckyNumber),message);//replace %% messages with amounts.
+			player.sendMessage(message);//ticket refunded message
+			lotto.econ.depositPlayer(player, pData.getBetAmt(position));//Actually REFUND their money....
+			lotto.atData.set(uuid+"."+ position+".LuckyNumber",lotto.atData.getInt(uuid+"."+totalTickets+".LuckyNumber"));//Move last to current.
+			lotto.atData.set(uuid+"."+ position+".BetAmount",lotto.atData.getInt(uuid+"."+totalTickets+".BetAmount"));
+			lotto.atData.save();
+			lotto.atData.reload();
+			lotto.atData.set(uuid+"."+ totalTickets+".LuckyNumber",null);//remove last.
+			lotto.atData.set(uuid+"."+ totalTickets+".BetAmount",null);
+			totalTickets--;
+			lotto.atData.set(player.getUniqueId().toString()+".TotalActiveTickets",totalTickets);//Removed a ticket.
+			lotto.atData.save();
+			lotto.atData.reload();
+		}else if(position!=-1&&position==totalTickets){//we found it, AND it is the last ticket. Just delete it.
+			PlayerData pData = new PlayerData(player,lotto);
+			String message = lotto.getConfig().getString(lotto.betRefundedMsg);//get the betRefundedMessage from config.
+			message = lotto.subColors(message);//sub colors in from config.
+			message = replaceVars(luckyNumber,pData.getBetAmt(luckyNumber),message);//replace %% messages with amounts.
+			player.sendMessage(message);//ticket refunded message
+			lotto.econ.depositPlayer(player, pData.getBetAmt(position));//Actually REFUND their money....
+			lotto.atData.set(uuid+"."+ position+".LuckyNumber",null);
+			lotto.atData.set(uuid+"."+ position+".BetAmount",null);
+			totalTickets--;
+			lotto.atData.set(player.getUniqueId().toString()+".TotalActiveTickets",totalTickets);//Removed a ticket.
+			
+			lotto.atData.save();
+			lotto.atData.reload();
+		}
 		/*
 		if(lotto.atData.getString(player.getUniqueId().toString()+".LuckyNumber")!=null){
 			PlayerData pdata = new PlayerData(player,lotto);
@@ -61,7 +116,7 @@ public class TicketManager {
 		}//end if there is a ticket to refund
 		return false;//found no ticket
 		*/
-		return false;//this needs rewritten
+		//return false;//this needs rewritten
 	}//end refundTicket()
 
 	
