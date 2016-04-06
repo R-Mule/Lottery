@@ -13,7 +13,7 @@ public class Numbers {
 	public int findRandom(int range){
 		Random r= new Random();
 	    int randomNum = r.nextInt((range - 1) + 1) + 1;
-		return 1;//randomNum;
+		return randomNum;
 	}//end findRandom()
 
 	public boolean isValidNumber(int number,Player p){

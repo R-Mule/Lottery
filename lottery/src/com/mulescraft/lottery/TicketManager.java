@@ -272,6 +272,7 @@ public class TicketManager {
 		lotto.mqData.set(uuid.toString()+".1.LuckyNumber", yourNumber);
 		lotto.mqData.set(uuid.toString()+".1.WinningNumber", winningNumber);
 		lotto.mqData.save();
+		lotto.mqData.reload();
 	}//end storeMessageInQue()
 	
 	public void checkPrintMessageInQue(Player player){
