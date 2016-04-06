@@ -269,7 +269,7 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(sStatsBiggestWin, "&6Biggest Win All Time:&2 $%wins% &6By: &2%player%");
 		getConfig().addDefault(sStatsBiggestLoss, "&6Biggest Loss All Time:&2 $%losses% &6By: &2%player%");
 		getConfig().addDefault(sStatsMostWins, "&6Most Wins All Time:&2 %wins% &6By: &2%player%");
-		getConfig().addDefault(sStatsMostLosses, "&6Most Losses All Time:&2 $%losses% &6By: &2%player%");		
+		getConfig().addDefault(sStatsMostLosses, "&6Most Losses All Time:&2 %losses% &6By: &2%player%");		
 		
 		//Print Active Tickets Msg
 		getConfig().addDefault(currentTicketsHeader, "&6Player &f: &bNumber &f: &2Bet &f: &aPossible Amount Won");
