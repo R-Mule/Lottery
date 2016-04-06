@@ -94,12 +94,12 @@ public class PlayerData {
 	}//end getTotalAmtLost
 
 	public void printPlayerStats(){//CANNOT BE CALLED WHEN OFFLINE PLAYER CTOR IS USED!
-		player.sendMessage("Your Total Wins: "+getTotalWins(player.getUniqueId()));
-		player.sendMessage("Your Total Losses: "+getTotalLosses(player.getUniqueId()));
-		player.sendMessage("Your Biggest Win: $"+getBiggestWin(player.getUniqueId()));
-		player.sendMessage("Your Biggest Loss: $"+getBiggestLoss(player.getUniqueId()));
-		player.sendMessage("Your Total Amount Won: $"+getTotalAmtWon(player.getUniqueId()));
-		player.sendMessage("Your Total Amount Lost: $"+getTotalAmtLost(player.getUniqueId()));
+		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.pStatsTotalWinsMsg).replaceAll("%wins%", Integer.toString(getTotalWins(player.getUniqueId())))));
+		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.pStatsTotalLossesMsg).replaceAll("%losses%", Integer.toString(getTotalLosses(player.getUniqueId())))));
+		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.pStatsBiggestWinMsg).replaceAll("%wins%", Double.toString(getBiggestWin(player.getUniqueId())))));
+		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.pStatsBiggestLossMsg).replaceAll("%losses%", Double.toString(getBiggestLoss(player.getUniqueId())))));
+		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.pStatsTotalAmtWonMsg).replaceAll("%wins%", Double.toString(getTotalAmtWon(player.getUniqueId())))));
+		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.pStatsTotalAmtLostMsg).replaceAll("%losses%", Double.toString(getTotalAmtLost(player.getUniqueId())))));
 	}//end printPlayerStats
 
 

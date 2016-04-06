@@ -93,14 +93,24 @@ public class LotteryTimer {
 
 		//Begin Print!
 		if(days!=0){
-			sender.sendMessage(lotto.subColors("&2Time Until Lottery End: &c"+ days+"&2D&c "+hours+"&2H&c "+minutes+"&2M&c "+seconds+"&2S"));
+			String message = lotto.getConfig().getString(lotto.daysHrsMinsSecRemain).replaceAll("%days%", Integer.toString(days));
+			message = message.replaceAll("%hours%", Integer.toString(hours));
+			message = message.replaceAll("%minutes%", Integer.toString(minutes));
+			message = message.replaceAll("%seconds%", Integer.toString(seconds));
+			sender.sendMessage(lotto.subColors(message));
 		}else if(hours!=0){
-			sender.sendMessage(lotto.subColors("&2Time Until Lottery End: &c"+hours+"&2H&c "+minutes+"&2M&c "+seconds+"&2S"));
+			String message = lotto.getConfig().getString(lotto.hrsMinsSecRemain).replaceAll("%hours%", Integer.toString(hours));
+			message = message.replaceAll("%minutes%", Integer.toString(minutes));
+			message = message.replaceAll("%seconds%", Integer.toString(seconds));
+			sender.sendMessage(lotto.subColors(message));
 		}
 		else if(minutes!=0){
-			sender.sendMessage(lotto.subColors("&2Time Until Lottery End: &c"+minutes+"&2M&c "+seconds+"&2S"));
+			String message = lotto.getConfig().getString(lotto.minsSecRemain).replaceAll("%minutes%", Integer.toString(minutes));
+			message = message.replaceAll("%seconds%", Integer.toString(seconds));
+			sender.sendMessage(lotto.subColors(message));
 		}else if(seconds!=0){
-			sender.sendMessage(lotto.subColors("&2Time Until Lottery End: &c"+seconds+"&2S"));
+			String message = lotto.getConfig().getString(lotto.secRemain).replaceAll("%seconds%", Integer.toString(seconds));
+			sender.sendMessage(lotto.subColors(message));
 		}
 	}//end printRemainingTime()
 
@@ -131,14 +141,24 @@ public class LotteryTimer {
 
 		//Begin Print!
 		if(days!=0){
-			Bukkit.broadcastMessage(lotto.subColors("&2Time Until Lottery End: &c"+ days+"&2D&c "+hours+"&2H&c "+minutes+"&2M&c "+seconds+"&2S"));
+			String message = lotto.getConfig().getString(lotto.daysHrsMinsSecRemain).replaceAll("%days%", Integer.toString(days));
+			message = message.replaceAll("%hours%", Integer.toString(hours));
+			message = message.replaceAll("%minutes%", Integer.toString(minutes));
+			message = message.replaceAll("%seconds%", Integer.toString(seconds));
+			Bukkit.broadcastMessage(lotto.subColors(message));
 		}else if(hours!=0){
-			Bukkit.broadcastMessage(lotto.subColors("&2Time Until Lottery End: &c"+hours+"&2H&c "+minutes+"&2M&c "+seconds+"&2S"));
+			String message = lotto.getConfig().getString(lotto.hrsMinsSecRemain).replaceAll("%hours%", Integer.toString(hours));
+			message = message.replaceAll("%minutes%", Integer.toString(minutes));
+			message = message.replaceAll("%seconds%", Integer.toString(seconds));
+			Bukkit.broadcastMessage(lotto.subColors(message));
 		}
 		else if(minutes!=0){
-			Bukkit.broadcastMessage(lotto.subColors("&2Time Until Lottery End: &c"+minutes+"&2M&c "+seconds+"&2S"));
+			String message = lotto.getConfig().getString(lotto.minsSecRemain).replaceAll("%minutes%", Integer.toString(minutes));
+			message = message.replaceAll("%seconds%", Integer.toString(seconds));
+			Bukkit.broadcastMessage(lotto.subColors(message));
 		}else if(seconds!=0){
-			Bukkit.broadcastMessage(lotto.subColors("&2Time Until Lottery End: &c"+seconds+"&2S"));
+			String message = lotto.getConfig().getString(lotto.secRemain).replaceAll("%seconds%", Integer.toString(seconds));
+			Bukkit.broadcastMessage(lotto.subColors(message));
 		}
 	}//end printRemainingTime()
 }//end class LotteryTimer

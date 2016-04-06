@@ -76,32 +76,32 @@ public class CommandParser implements CommandExecutor {
 
 	private void printCommandMenu(CommandSender sender){
 		if(sender.hasPermission("lottery.lottery")){
-			sender.sendMessage(ChatColor.BLUE+"~~Lottery Commands~~");
-			sender.sendMessage(ChatColor.BLUE+"Lucky Number Range: 1-"+lotto.getConfig().getInt(lotto.ticketRange));
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuTitleMsg)));
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuRangeMsg).replaceAll("%range%",Integer.toString(lotto.getConfig().getInt(lotto.ticketRange)))));
 		}//end lottery header
 		if(sender.hasPermission("lottery.stop")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery stop"+ChatColor.GREEN+" : stops the lottery rewarding now");
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuStopMsg)));
 		}//end loc
 		if(sender.hasPermission("lottery.start")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery start"+ChatColor.GREEN+" : starts a lottery forcefully.");
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuStartMsg)));
 		}//end give
 		if(sender.hasPermission("lottery.buy")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery buy <number> <$>"+ChatColor.GREEN+" : buys <number> with <$> gambled Number Range: 1-"+lotto.getConfig().getInt(lotto.ticketRange));
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuBuyMsg).replaceAll("%range%",Integer.toString(lotto.getConfig().getInt(lotto.ticketRange)))));
 		}//end open
 		if(sender.hasPermission("lottery.refund")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery refund <luckyNumber>"+ChatColor.GREEN+" : returns your money, and removes your bet for <luckyNumber>");
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuRefundMsg)));
 		}//end open
 		if(sender.hasPermission("lottery.time")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery time"+ChatColor.GREEN+" : shows remaining time until end of lottery");
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuTimeMsg)));
 		}//end open
 		if(sender.hasPermission("lottery.stats")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery stats <server/self>"+ChatColor.GREEN+" : shows categories of best all time stats");
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuStatsMsg)));
 		}//end open
 		if(sender.hasPermission("lottery.history")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery history"+ChatColor.GREEN+" : shows last "+lotto.getConfig().getInt(lotto.historyRange) +" lottery winners");
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuHistoryMsg).replaceAll("%historyrange%",Integer.toString(lotto.getConfig().getInt(lotto.historyRange)))));
 		}//end open
 		if(sender.hasPermission("lottery.current")){
-			sender.sendMessage(ChatColor.WHITE+"/lottery current"+ChatColor.GREEN+" : shows active tickets for the current lottery");
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.commandMenuCurrentMsg)));
 		}
 	}//end printCommandMenu
 

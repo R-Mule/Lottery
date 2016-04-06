@@ -221,14 +221,15 @@ public class TicketManager {
 			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.showHistoryMsg).replaceAll("%number%",Integer.toString(range) )));
 			while(i<=lotto.lhData.getInt("TotalLotteriesPlayed")){
 
-				sender.sendMessage("Lottery Number: "+i+" Winning Number: "+lotto.lhData.getInt(Integer.toString(i)+".WinningNumber"));
-				
+				String message = lotto.getConfig().getString(lotto.historyHeader).replaceAll("%number%",Integer.toString(i));
+				message = message.replaceAll("%winnumber%",Integer.toString(lotto.lhData.getInt(Integer.toString(i)+".WinningNumber")));
+				sender.sendMessage(lotto.subColors(message));
 				List<String> winners = lotto.lhData.getStringList(Integer.toString(i)+".Winners");
 				if(winners.isEmpty()){
-					sender.sendMessage("Winners: None");
+					sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.historyWinnersFalse)));
 				}
 				else{
-					sender.sendMessage("Winners: ");
+					sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.historyWinnersTrue)));
 					for(String player:winners){//for all the winners
 						sender.sendMessage(lotto.subColors(player));
 					}//end for all the winners.
@@ -252,12 +253,17 @@ public class TicketManager {
 		activeUUIDS =  lotto.atData.getStringList("Active UUIDS");//lets get all the active UUIDs.
 		if(!activeUUIDS.isEmpty()){
 			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.activeTicketsMsg)).replaceAll("%number%",Integer.toString(lotto.lhData.getInt("TotalLotteriesPlayed")+1)));
-			sender.sendMessage("Player : Number : Bet");
+			sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.currentTicketsHeader)));//Player : Bet : Number
 			for(String uuid : activeUUIDS){
 				UUID pUUID = UUID.fromString(uuid);
 				OfflinePlayer player = Bukkit.getOfflinePlayer(pUUID);
 				for(int ticket=1;ticket<=lotto.atData.getInt(uuid+".TotalActiveTickets");ticket++){
-					sender.sendMessage(player.getName()+" : "+lotto.atData.getInt(uuid+"."+ticket+".LuckyNumber")+" : "+lotto.atData.getDouble(uuid+"."+ticket+".BetAmount"));
+					String message = lotto.getConfig().getString(lotto.currentTicketsContent).replaceAll("%player%", player.getName());
+					message = message.replaceAll("%number%",Integer.toString(lotto.atData.getInt(uuid+"."+ticket+".LuckyNumber")));
+					message = message.replaceAll("%bet%", Double.toString(lotto.atData.getDouble(uuid+"."+ticket+".BetAmount")));
+					double amt2Win  = lotto.atData.getDouble(uuid+"."+ticket+".BetAmount")*lotto.getConfig().getDouble(lotto.winningsAmplifier);
+					message = message.replaceAll("%amount2win%", Double.toString(amt2Win));
+					sender.sendMessage(lotto.subColors(message));
 				}//end for all tickets for your UUID
 			}//end for active uuid find right one
 		}else{
@@ -291,7 +297,4 @@ public class TicketManager {
 	}//end checkPrintMessageInQue()
 	
 	
-	public boolean isTicketAlreadyActive(){//determines if the ticket is already active or not.
-		return true;
-	}
 }//end TicketManager Class

@@ -75,6 +75,49 @@ public class Lottery extends JavaPlugin implements Listener {
 	public String noBetOnThatNumberMsg = "NO_BET_ON_THAT_NUMBER_MSG";
 	public String refundSyntaxErrorMsg = "REFUND_SYNTAX_ERROR_MSG";
 	
+	//Command Menu Messages
+	public String commandMenuTitleMsg="COMMAND_MENU_TITLE_MSG";
+	public String commandMenuRangeMsg="COMMAND_MENU_RANGE_MSG";
+	public String commandMenuStopMsg="COMMAND_MENU_STOP_MSG";
+	public String commandMenuStartMsg="COMMAND_MENU_START_MSG";
+	public String commandMenuBuyMsg="COMMAND_MENU_BUY_MSG";
+	public String commandMenuRefundMsg="COMMAND_MENU_REFUND_MSG";
+	public String commandMenuTimeMsg="COMMAND_MENU_TIME_MSG";
+	public String commandMenuStatsMsg="COMMAND_MENU_STATS_MSG";
+	public String commandMenuHistoryMsg="COMMAND_MENU_HISTORY_MSG";
+	public String commandMenuCurrentMsg="COMMAND_MENU_CURRENT_MSG";
+	
+	//Time Remaining Messages
+	public String daysHrsMinsSecRemain="DAYS_HRS_MINS_SEC_REMAIN_MSG";
+	public String hrsMinsSecRemain="HRS_MINS_SEC_REMAIN_MSG";
+	public String minsSecRemain="MINS_SEC_REMAIN_MSG";
+	public String secRemain="SEC_REMAIN_MSG";
+	
+	//Player Stats Messages
+	public String pStatsTotalWinsMsg="PLAYER_STATS_TOTAL_WINS_MSG";
+	public String pStatsTotalLossesMsg="PLAYER_STATS_TOTAL_LOSSES_MSG";
+	public String pStatsBiggestWinMsg="PLAYER_STATS_BIGGEST_WIN_MSG";
+	public String pStatsBiggestLossMsg="PLAYER_STATS_BIGGEST_LOSS_MSG";
+	public String pStatsTotalAmtWonMsg="PLAYER_STATS_TOTAL_AMT_WON_MSG";
+	public String pStatsTotalAmtLostMsg="PLAYER_STATS_TOTAL_AMT_LOST_MSG";
+
+	//Server Stats Messages
+	public String sStatsTotalWon="SERVER_STATS_TOTAL_WON_MSG";
+	public String sStatsTotalLost="SERVER_STATS_TOTAL_LOST_MSG";
+	public String sStatsBiggestWin="SERVER_STATS_BIGGEST_WIN_MSG";
+	public String sStatsBiggestLoss="SERVER_STATS_BIGGEST_LOSS_MSG";
+	public String sStatsMostWins="SERVER_STATS_MOST_WINS_MSG";
+	public String sStatsMostLosses="SERVER_STATS_MOST_LOSSES_MSG";
+	
+	//current Active Tickets Messages
+	public String currentTicketsHeader="CURRENT_TICKETS_HEADER";
+	public String currentTicketsContent="CURRENT_TICKETS_CONTENT";
+	
+	//History Messages
+	public String historyHeader="HISTORY_HEADER";
+	public String historyWinnersTrue="HISTORY_WINNERS_TRUE";
+	public String historyWinnersFalse="HISTORY_WINNERS_FALSE";
+	
 	public LotteryTimer lotTime;
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
@@ -193,6 +236,50 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(alreadyActiveTicketMsg, "&2A ticket with lucky number &6%number% &2already has a bet on it from you. Try another number?");
 		getConfig().addDefault(noBetOnThatNumberMsg,"&2There is currently no bet on number &6%number% &2by you.");
 		getConfig().addDefault(refundSyntaxErrorMsg,"&2Please use &6/refund <luckyNumber> &2where <luckyNumber> is the number you bet on. Try &6/lottery current&2 to see active bets.");
+		
+		//comand menu messages
+		getConfig().addDefault(commandMenuTitleMsg, "&2~~&6Lottery Commands&2~~");
+		getConfig().addDefault(commandMenuRangeMsg, "&2Lucky Number Range:&6 1-%range%");
+		getConfig().addDefault(commandMenuStartMsg, "&f/lottery start &2: starts a lottery forcefully.");
+		getConfig().addDefault(commandMenuStopMsg, "&f/lottery stop &2: stops the lottery rewarding now.");
+		getConfig().addDefault(commandMenuBuyMsg, "&f/lottery buy <number> <$> &2: buys <number> with <$> gambled Number Range: 1-%range%");
+		getConfig().addDefault(commandMenuRefundMsg, "&f/lottery refund <luckyNumber> &2: returns your money, and removes your bet for <luckyNumber>");
+		getConfig().addDefault(commandMenuTimeMsg, "&f/lottery time &2: shows remaining time until end of lottery");
+		getConfig().addDefault(commandMenuStatsMsg, "&f/lottery stats <server/self> &2: shows categories of best all time stats");
+		getConfig().addDefault(commandMenuHistoryMsg, "&f/lottery history &2: shows last %historyrange% lottery winners");
+		getConfig().addDefault(commandMenuCurrentMsg, "&f/lottery current &2: shows active tickets for the current lottery");
+		
+		//countdown messages
+		getConfig().addDefault(daysHrsMinsSecRemain, "&2Time Until Lottery End:&c %days%&2D &c%hours%&2H &c%minutes%&2M&c %seconds%&2S");
+		getConfig().addDefault(hrsMinsSecRemain, "&2Time Until Lottery End:&c%hours%&2H &c%minutes%&2M&c %seconds%&2S");
+		getConfig().addDefault(minsSecRemain, "&2Time Until Lottery End:&c%minutes%&2M&c %seconds%&2S");
+		getConfig().addDefault(secRemain, "&2Time Until Lottery End:&c %seconds%&2S");
+		
+		//player Stats Messages
+		getConfig().addDefault(pStatsTotalWinsMsg, "&6Your Total Wins:&2 %wins%");
+		getConfig().addDefault(pStatsTotalLossesMsg, "&6Your Total Losses:&2 %losses%");
+		getConfig().addDefault(pStatsBiggestWinMsg, "&6Your Biggest Win:&2 $%wins%");
+		getConfig().addDefault(pStatsBiggestLossMsg, "&6Your BiggestLoss:&2 $%losses%");
+		getConfig().addDefault(pStatsTotalAmtWonMsg, "&6Your Total Amount Won:&2 $%wins%");
+		getConfig().addDefault(pStatsTotalAmtLostMsg, "&6Your Total Amount Lost:&2 $%losses%");
+		
+		//Server Stats Messages
+		getConfig().addDefault(sStatsTotalWon, "&6Total Won:&2 $%wins%");
+		getConfig().addDefault(sStatsTotalLost, "&6Total Lost:&2 $%losses%");
+		getConfig().addDefault(sStatsBiggestWin, "&6Biggest Win All Time:&2 $%wins% &6By: &2%player%");
+		getConfig().addDefault(sStatsBiggestLoss, "&6Biggest Loss All Time:&2 $%losses% &6By: &2%player%");
+		getConfig().addDefault(sStatsMostWins, "&6Most Wins All Time:&2 %wins% &6By: &2%player%");
+		getConfig().addDefault(sStatsMostLosses, "&6Most Losses All Time:&2 $%losses% &6By: &2%player%");		
+		
+		//Print Active Tickets Msg
+		getConfig().addDefault(currentTicketsHeader, "&6Player &f: &bNumber &f: &2Bet &f: &aPossible Amount Won");
+		getConfig().addDefault(currentTicketsContent, "&6%player% &f: &b%number% &f: &2$%bet% &f: &a%amount2win%");
+		
+		//Show History Msgs
+		getConfig().addDefault(historyHeader, "&2Lottery Number: &6%number% &2Winning Number: &6%winnumber%");
+		getConfig().addDefault(historyWinnersFalse, "&2Winners: &6None.");
+		getConfig().addDefault(historyWinnersTrue, "&2Winners: ");
+		
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}//end loadDefaultConfigVars

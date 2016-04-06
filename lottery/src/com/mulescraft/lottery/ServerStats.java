@@ -67,12 +67,22 @@ public class ServerStats {
 	}//end checkMostLosses()
 
 	public void printServerStats(){//cannot be called when OFFLINEPLAYER is used!
-		player.sendMessage("Total Won: $"+lotto.lhData.getDouble(lotto.serverStats+".TotalWon"));//All server money ever won.
-		player.sendMessage("Total Lost: $"+lotto.lhData.getDouble(lotto.serverStats+".TotalLost"));//All money ever lost.
-		player.sendMessage("Biggest Win All Time: $"+lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount")+" By: "+ lotto.lhData.getString(lotto.serverStats+".BiggestWin.Player"));//should print 0 if never a winner.
-		player.sendMessage("Biggest Loss All Time: $"+lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount")+" By: "+lotto.lhData.getString(lotto.serverStats+".BiggestLoss.Player"));//should print 0 if never a loser.
-		player.sendMessage("Most Wins All Time: "+lotto.lhData.getInt(lotto.serverStats+".MostWins.Number")+" By: "+ lotto.lhData.getString(lotto.serverStats+".MostWins.Player"));//should print 0 if never a winner.
-		player.sendMessage("Most Losses All Time: "+lotto.lhData.getInt(lotto.serverStats+".MostLosses.Number")+" By: "+lotto.lhData.getString(lotto.serverStats+".MostLosses.Player"));//should print 0 if never a loss.
+		//Total Won and Total Lost
+		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.sStatsTotalWon).replaceAll("%wins%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".TotalWon")))));
+		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.sStatsTotalLost).replaceAll("%losses%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".TotalLost")))));
+		//BiggestWin
+		String message = lotto.getConfig().getString(lotto.sStatsBiggestWin).replaceAll("%wins%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount")));
+		player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".BiggestWin.Player"))));
+		//BiggestLoss
+		message = lotto.getConfig().getString(lotto.sStatsBiggestLoss).replaceAll("%losses%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount")));
+		player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".BiggestLoss.Player"))));
+		//Most Wins
+		message = lotto.getConfig().getString(lotto.sStatsMostWins).replaceAll("%wins%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number")));
+		player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".MostWins.Player"))));
+		//Most Losses
+		message = lotto.getConfig().getString(lotto.sStatsMostLosses).replaceAll("%losses%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".MostLosses.Number")));
+		player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".MostLosses.Player"))));
+
 	}//end printServerStats
 
 }//end class ServerStats

@@ -8,7 +8,7 @@ public class Documentation {
 	
 	
 	public String getDocumentation(){
-		String message="Lottery Version 1.0.8 Welcome to Lottery!\n";
+		String message="Lottery Version 1.0.9 Welcome to Lottery!\n";
 		message = message.concat("The section below, goes over example config setup, and what each container is used for.\n");
 		message = message.concat("\n");
 		message = message.concat("Auto Start Lottery Timer: true    Whether or not to start lottery on start up.\n");
@@ -19,6 +19,7 @@ public class Documentation {
 		message = message.concat("History Range to Show on Command History: 5   When /lottery history is used, the last 5 Lottery Results will be shown.\n");
 		message = message.concat("\n");
 		message = message.concat("Sound Section: FIND SOUNDS HERE: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html\n");
+		message = message.concat("FOR ANYONE RUNNING 1.8, PLEASE MAKE SURE TO USE A 1.8 SOUND! OR SIMPLY SET THIS SECTION Enabled: false\n");
 		message = message.concat("Enabled: true    whether or not sounds are turned on\n");
 		message = message.concat("Exmaple: soundOnWin: ENTITY_FIREWORK_LARGE_BLAST plays the sound on a winning lottery ticket for the winner.\n");
 		message = message.concat("\n");
