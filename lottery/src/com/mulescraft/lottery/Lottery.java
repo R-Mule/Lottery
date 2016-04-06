@@ -187,7 +187,7 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(showHistoryMsg, "&6%number% &2most recent Lottery Results");
 		getConfig().addDefault(noHistoryMsg, "&2There are no lottery results recorded yet.");
 		getConfig().addDefault(notValidNumMsg, "&2Please enter a number between&6 1 &2and&6 %range%");
-		getConfig().addDefault(activeTicketsMsg, "&2~Current Tickets For Lottery Number:&6 %number% ~");
+		getConfig().addDefault(activeTicketsMsg, "&2~Current Tickets For Lottery Number:&6 %number% &2~");
 		getConfig().addDefault(noActiveTicketsMsg, "&2There are currently no active tickets to display.");
 		getConfig().addDefault(startMsg, "&2The Lottery has started! Use &6/lottery&2 to play!");
 		getConfig().addDefault(alreadyActiveTicketMsg, "&2A ticket with lucky number &6%number% &2already has a bet on it from you. Try another number?");

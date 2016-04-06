@@ -34,7 +34,7 @@ public class TicketManager {
 			lotto.atData.set(player.getUniqueId().toString()+"."+ (totalActTkts)+".LuckyNumber",luckyNumber);
 			lotto.atData.set(player.getUniqueId().toString()+"."+ (totalActTkts)+".BetAmount",amount);
 			activeUUIDS = lotto.atData.getStringList("Active UUIDS");//get the list before overwriting it
-			if(totalActTkts==1){//we only needed to add the UUID one time.
+			if(totalActTkts==1&&!activeUUIDS.contains(player.getUniqueId().toString())){//we only needed to add the UUID one time.
 				activeUUIDS.add(player.getUniqueId().toString());//and uuid to it
 				lotto.atData.set("Active UUIDS", activeUUIDS);//set the new list of valid UUIDS back.
 			}
