@@ -34,9 +34,13 @@ public class LotteryTimer {
 			@Override
 			public void run() {
 				lotto.atData.save();
+				lotto.atData.reload();
 				lotto.lhData.save();
+				lotto.lhData.reload();
 				lotto.mqData.save();
+				lotto.mqData.reload();
 				lotto.pData.save();
+				lotto.pData.reload();
 				tman.lotteryEnded();
 
 			}//end run

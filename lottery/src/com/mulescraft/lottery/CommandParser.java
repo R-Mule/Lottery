@@ -132,17 +132,21 @@ public class CommandParser implements CommandExecutor {
 							//INSERT HERE, IF TICKET IS NOT ALREADY ACTIVE!
 							//create ticket in ActiveTickets.yml 
 							TicketManager tman = new TicketManager(lotto);
-							if(tman.addTicket(player,Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
-								lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
-								if(lotto.getConfig().getBoolean(lotto.soundsEnabled))
-									player.getWorld().playSound(player.getLocation(), Sound.valueOf(lotto.getConfig().getString(lotto.soundOnBuy)),100,0);
-								String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
-								message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
-								message = lotto.subColors(message);//replace any colors.
-								sender.sendMessage(message);
-							}else{//That ticket is already active MSG.
-								sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.alreadyActiveTicketMsg).replaceAll("%number%",args[1])));
-							}//end else already active ticket msg.
+							if(lotto.atData.getInt(player.getUniqueId().toString()+".TotalActiveTickets")<lotto.getConfig().getInt(lotto.maxTicketsPerPlayer)){
+								if(tman.addTicket(player,Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
+									lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
+									if(lotto.getConfig().getBoolean(lotto.soundsEnabled))
+										player.getWorld().playSound(player.getLocation(), Sound.valueOf(lotto.getConfig().getString(lotto.soundOnBuy)),100,0);
+									String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
+									message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
+									message = lotto.subColors(message);//replace any colors.
+									sender.sendMessage(message);
+								}else{//That ticket is already active MSG.
+									sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.alreadyActiveTicketMsg).replaceAll("%number%",args[1])));
+								}//end else already active ticket msg.
+							}else{//Sorry you are at your max tickets per lottery
+								sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.maxTicketsPerPlayerMsg).replaceAll("%maxnumber%",Integer.toString(lotto.getConfig().getInt(lotto.maxTicketsPerPlayer)))));
+							}
 						}//end else is a valid number.
 					}else{
 						sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notEnoughMoneyMsg)));//Not enough money to place the bet message!

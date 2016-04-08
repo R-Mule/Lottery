@@ -34,7 +34,7 @@ public class Lottery extends JavaPlugin implements Listener {
 	public String serverStats = "ServerAllTimeStats";
 	public String historyRange ="History Range to Show on Command History";
 	public String announceLotteryStart = "Announce Lottery Start";
-	
+	public String maxTicketsPerPlayer = "Players Max Tickets Per Lottery";
 	//Sound Section
 	public String soundsEnabled ="Sounds.Enabled"; 
 	public String soundOnWin = "Sounds.SOUND_ON_WIN";
@@ -118,6 +118,9 @@ public class Lottery extends JavaPlugin implements Listener {
 	public String historyWinnersTrue="HISTORY_WINNERS_TRUE";
 	public String historyWinnersFalse="HISTORY_WINNERS_FALSE";
 	
+    //Max Tickets Per Player Msg
+	public String maxTicketsPerPlayerMsg = "MAX_TICKETS_REACHED_MSG";
+	
 	public LotteryTimer lotTime;
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
@@ -182,6 +185,7 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(ticketRange, 9);
 		getConfig().addDefault(historyRange, 5);
 		getConfig().addDefault(announceLotteryStart, true);
+		getConfig().addDefault(maxTicketsPerPlayer, 9);
 		
 		//Sound Section
 		getConfig().addDefault(soundsEnabled, true);
@@ -222,8 +226,8 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(missingSelfServerMsg, "&2You need to use &6/lottery stats self &2or &6/lottery stats server &2.");
 		getConfig().addDefault(invalidNumberArguments,"&2The values entered are not numbers. Please use &6/lottery buy <luckynumber> <amount> &2with no <>");
 		getConfig().addDefault(missingBuyArguments, "&2Command Usage: &6/buy <luckynumber> <amount>");
-		getConfig().addDefault(youWonMessage, "&2CONGRATULATIONS! YOU JUST WON &6$%amount% &2AT THE LOTTERY!");
-		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket did not win, you lost&6 $%amount% &2at the lottery.");
+		getConfig().addDefault(youWonMessage, "&2CONGRATULATIONS! YOU JUST WON &6$%amount% &2ON NUMBER &6%number% &2AT THE LOTTERY!");
+		getConfig().addDefault(youLostMessage, "&2Sorry, your ticket on number &6%number% &2did not win, you lost&6 $%amount% &2at the lottery.");
 		getConfig().addDefault(notStrtAlrdyStrtdMsg, "&2Cannot start the lottery. It is already running.");
 		getConfig().addDefault(notStpdAlrdyStpdMsg, "&2Cannot stop the lottery. It is already stopped.");
 		getConfig().addDefault(lotteryEndServerMsg, "&2The Lottery has ended. The winning number was: &6%winningnumber%");
@@ -280,12 +284,15 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(historyWinnersFalse, "&2Winners: &6None.");
 		getConfig().addDefault(historyWinnersTrue, "&2Winners: ");
 		
+		//Max Tickets Msg
+		getConfig().addDefault(maxTicketsPerPlayerMsg, "&2Cannot add ticket. You are at your max of &6%maxnumber% &2per lottery.");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}//end loadDefaultConfigVars
 
 	@Override
 	public void onDisable(){
+		console.sendMessage(ChatColor.BLUE+"[Lottery] Disabled Successfully. *High Five*");
 		//saveConfig();
 	}//end onDisable()
 
