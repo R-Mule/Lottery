@@ -2,7 +2,6 @@ package com.mulescraft.lottery;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -132,20 +131,24 @@ public class CommandParser implements CommandExecutor {
 							//INSERT HERE, IF TICKET IS NOT ALREADY ACTIVE!
 							//create ticket in ActiveTickets.yml 
 							TicketManager tman = new TicketManager(lotto);
-							if(lotto.atData.getInt(player.getUniqueId().toString()+".TotalActiveTickets")<lotto.getConfig().getInt(lotto.maxTicketsPerPlayer)){
-								if(tman.addTicket(player,Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
-									lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
-									if(lotto.getConfig().getBoolean(lotto.soundsEnabled))
-										player.getWorld().playSound(player.getLocation(), Sound.valueOf(lotto.getConfig().getString(lotto.soundOnBuy)),100,0);
-									String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
-									message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
-									message = lotto.subColors(message);//replace any colors.
-									sender.sendMessage(message);
-								}else{//That ticket is already active MSG.
-									sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.alreadyActiveTicketMsg).replaceAll("%number%",args[1])));
-								}//end else already active ticket msg.
-							}else{//Sorry you are at your max tickets per lottery
-								sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.maxTicketsPerPlayerMsg).replaceAll("%maxnumber%",Integer.toString(lotto.getConfig().getInt(lotto.maxTicketsPerPlayer)))));
+							if(lotto.getConfig().getInt(lotto.maxBetAmount)>=Integer.parseInt(args[2])||lotto.getConfig().getInt(lotto.maxBetAmount)==-1){//if under max bet amount per ticket.
+								if(lotto.atData.getInt(player.getUniqueId().toString()+".TotalActiveTickets")<lotto.getConfig().getInt(lotto.maxTicketsPerPlayer)){
+									if(tman.addTicket(player,Integer.parseInt(args[1]),Double.parseDouble(args[2]))){
+										lotto.econ.withdrawPlayer(player, Double.parseDouble(args[2]));//purchased!
+										if(lotto.getConfig().getBoolean(lotto.soundsEnabled))
+											player.getWorld().playSound(player.getLocation(), Sound.valueOf(lotto.getConfig().getString(lotto.soundOnBuy)),100,0);
+										String message = lotto.getConfig().getString(lotto.betAcceptedMsg);
+										message = replaceVars(Integer.parseInt(args[1]),Double.parseDouble(args[2]),message);
+										message = lotto.subColors(message);//replace any colors.
+										sender.sendMessage(message);
+									}else{//That ticket is already active MSG.
+										sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.alreadyActiveTicketMsg).replaceAll("%number%",args[1])));
+									}//end else already active ticket msg.
+								}else{//Sorry you are at your max tickets per lottery
+									sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.maxTicketsPerPlayerMsg).replaceAll("%maxnumber%",Integer.toString(lotto.getConfig().getInt(lotto.maxTicketsPerPlayer)))));
+								}
+							}else{
+								sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.maxBetAmountExceededMsg).replaceAll("%amount%", Integer.toString(lotto.getConfig().getInt(lotto.maxBetAmount)))));//Max Bet Amount Msg
 							}
 						}//end else is a valid number.
 					}else{

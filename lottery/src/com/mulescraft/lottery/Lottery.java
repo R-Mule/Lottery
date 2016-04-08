@@ -35,6 +35,8 @@ public class Lottery extends JavaPlugin implements Listener {
 	public String historyRange ="History Range to Show on Command History";
 	public String announceLotteryStart = "Announce Lottery Start";
 	public String maxTicketsPerPlayer = "Players Max Tickets Per Lottery";
+	public String maxBetAmount = "Max Bet Amount Per Ticket";
+	
 	//Sound Section
 	public String soundsEnabled ="Sounds.Enabled"; 
 	public String soundOnWin = "Sounds.SOUND_ON_WIN";
@@ -121,6 +123,9 @@ public class Lottery extends JavaPlugin implements Listener {
     //Max Tickets Per Player Msg
 	public String maxTicketsPerPlayerMsg = "MAX_TICKETS_REACHED_MSG";
 	
+	//Max Bet Amount Msg
+	public String maxBetAmountExceededMsg = "MAX_BET_EXCEEDED_MSG";
+	
 	public LotteryTimer lotTime;
 	//locale? Might change this later, since each message is going to be custom.
 	public String localeHr = "Locale.Hour";
@@ -186,7 +191,7 @@ public class Lottery extends JavaPlugin implements Listener {
 		getConfig().addDefault(historyRange, 5);
 		getConfig().addDefault(announceLotteryStart, true);
 		getConfig().addDefault(maxTicketsPerPlayer, 9);
-		
+		getConfig().addDefault(maxBetAmount, -1);
 		//Sound Section
 		getConfig().addDefault(soundsEnabled, true);
 		getConfig().addDefault(soundOnWin, "ENTITY_FIREWORK_LARGE_BLAST");
@@ -286,6 +291,9 @@ public class Lottery extends JavaPlugin implements Listener {
 		
 		//Max Tickets Msg
 		getConfig().addDefault(maxTicketsPerPlayerMsg, "&2Cannot add ticket. You are at your max of &6%maxnumber% &2per lottery.");
+		
+		//Max Bet Msg
+		getConfig().addDefault(maxBetAmountExceededMsg, "&2Sorry, you must bet&6 %amount% &2or less.");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}//end loadDefaultConfigVars
