@@ -68,21 +68,52 @@ public class ServerStats {
 
 	public void printServerStats(){//cannot be called when OFFLINEPLAYER is used!
 		//Total Won and Total Lost
-		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.sStatsTotalWon).replaceAll("%wins%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".TotalWon")))));
-		player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.sStatsTotalLost).replaceAll("%losses%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".TotalLost")))));
+		if(lotto.lhData.getDouble(lotto.serverStats+".TotalWon")==0){
+			player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.sStatsTotalWon).replaceAll("%wins%", "0")));
+		}else{
+			player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.sStatsTotalWon).replaceAll("%wins%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".TotalWon")))));
+		}
+		if(lotto.lhData.getDouble(lotto.serverStats+".TotalLost")==0){
+			player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.sStatsTotalLost).replaceAll("%losses%","0")));
+		}else{
+			player.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.sStatsTotalLost).replaceAll("%losses%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".TotalLost")))));
+		}
+		
+		String message;
 		//BiggestWin
-		String message = lotto.getConfig().getString(lotto.sStatsBiggestWin).replaceAll("%wins%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount")));
-		player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".BiggestWin.Player"))));
+		if(lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount")==0){
+		    message = lotto.getConfig().getString(lotto.sStatsBiggestWin).replaceAll("%wins%", "0");
+			player.sendMessage(lotto.subColors(message.replaceAll("%player%", "NONE")));
+		}else{
+		    message = lotto.getConfig().getString(lotto.sStatsBiggestWin).replaceAll("%wins%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".BiggestWin.Amount")));
+			player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".BiggestWin.Player"))));
+		}
+
 		//BiggestLoss
-		message = lotto.getConfig().getString(lotto.sStatsBiggestLoss).replaceAll("%losses%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount")));
-		player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".BiggestLoss.Player"))));
+		if(lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount")==0){
+			message = lotto.getConfig().getString(lotto.sStatsBiggestLoss).replaceAll("%losses%", "0");
+			player.sendMessage(lotto.subColors(message.replaceAll("%player%", "NONE")));
+		}else{
+			message = lotto.getConfig().getString(lotto.sStatsBiggestLoss).replaceAll("%losses%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".BiggestLoss.Amount")));
+			player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".BiggestLoss.Player"))));
+		}
+		
 		//Most Wins
+		if(lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number")!=0){
 		message = lotto.getConfig().getString(lotto.sStatsMostWins).replaceAll("%wins%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number")));
 		player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".MostWins.Player"))));
+		}else{
+			message = lotto.getConfig().getString(lotto.sStatsMostWins).replaceAll("%wins%", "0");
+			player.sendMessage(lotto.subColors(message.replaceAll("%player%", "NONE")));
+		}
 		//Most Losses
+		if(lotto.lhData.getDouble(lotto.serverStats+".MostWins.Number")!=0){
 		message = lotto.getConfig().getString(lotto.sStatsMostLosses).replaceAll("%losses%", Double.toString(lotto.lhData.getDouble(lotto.serverStats+".MostLosses.Number")));
 		player.sendMessage(lotto.subColors(message.replaceAll("%player%", lotto.lhData.getString(lotto.serverStats+".MostLosses.Player"))));
-
+		}else{
+			message = lotto.getConfig().getString(lotto.sStatsMostLosses).replaceAll("%losses%", "0");
+			player.sendMessage(lotto.subColors(message.replaceAll("%player%","NONE")));
+		}
 	}//end printServerStats
 
 }//end class ServerStats

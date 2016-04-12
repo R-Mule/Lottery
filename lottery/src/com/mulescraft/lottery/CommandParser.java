@@ -17,7 +17,24 @@ public class CommandParser implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("lottery")&&sender.hasPermission("lottery.lottery")){  // If the player typed /crate then do
 			if (!(sender instanceof Player)){
+				if(args[0].equalsIgnoreCase("stop")&&sender.hasPermission("lottery.stop")){
+					if(lotto.isActive){//stop the lotto, it is active
+						lotto.lotTime.stopLottery();
+						TicketManager tman = new TicketManager(lotto);
+						tman.lotteryEnded();
+					}else{
+						sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notStpdAlrdyStpdMsg)));//already stopped message! Send it!
+					}//
+				}else if(args[0].equalsIgnoreCase("start")&&sender.hasPermission("lottery.start")){
+					//force start the lottery timer
+					if(!lotto.isActive){//start if not active
+						lotto.lotTime = new LotteryTimer(lotto,lotto.getConfig().getInt(lotto.lotteryRndTime));
+					}else{
+						sender.sendMessage(lotto.subColors(lotto.getConfig().getString(lotto.notStrtAlrdyStrtdMsg)));//send could not start message.
+					}
+				}else{
 				sender.sendMessage("This command can only be run by a player.");//sorry console.
+				}
 			}//end console check.
 			else{
 				if(args!=null && args.length>0){
